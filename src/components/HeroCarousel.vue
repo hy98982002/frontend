@@ -27,31 +27,34 @@
           <div class="container-fluid p-0">
             <div class="row align-items-center min-vh-80">
               <div class="col-lg-8 mx-auto text-center">
-                <div class="hero-content">
-                  <h1 class="hero-title" data-aos="fade-up">
-                    {{ slide.title }}
-                  </h1>
-                  <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
-                    {{ slide.subtitle }}
-                  </p>
-                  <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
-                    <a :href="slide.primaryButton.link" class="btn btn-tech-blue btn-lg me-3">
-                      {{ slide.primaryButton.text }}
-                    </a>
-                    <a :href="slide.secondaryButton.link" class="btn btn-outline-light btn-lg">
-                      {{ slide.secondaryButton.text }}
-                    </a>
-                  </div>
+                <!-- 课程说明卡片背景 -->
+                <div class="hero-content-card">
+                  <div class="hero-content">
+                    <h1 class="hero-title" data-aos="fade-up">
+                      {{ slide.title }}
+                    </h1>
+                    <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                      {{ slide.subtitle }}
+                    </p>
+                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
+                      <a :href="slide.primaryButton.link" class="btn btn-tech-blue btn-lg me-3">
+                        {{ slide.primaryButton.text }}
+                      </a>
+                      <a :href="slide.secondaryButton.link" class="btn btn-outline-light btn-lg">
+                        {{ slide.secondaryButton.text }}
+                      </a>
+                    </div>
 
-                  <!-- 特色标签 -->
-                  <div class="hero-features mt-4" data-aos="fade-up" data-aos-delay="600">
-                    <span
-                      v-for="feature in slide.features"
-                      :key="feature"
-                      class="badge bg-white text-dark me-2 mb-2"
-                    >
-                      <i class="fas fa-check me-1"></i>{{ feature }}
-                    </span>
+                    <!-- 特色标签 -->
+                    <div class="hero-features mt-4" data-aos="fade-up" data-aos-delay="600">
+                      <span
+                        v-for="feature in slide.features"
+                        :key="feature"
+                        class="badge bg-white text-dark me-2 mb-2"
+                      >
+                        <i class="fas fa-check me-1"></i>{{ feature }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -184,11 +187,35 @@ onMounted(() => {
   min-height: 60vh;
 }
 
+/* 课程说明卡片容器 */
+.hero-content-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 60px 40px;
+  margin: 40px auto;
+  max-width: 800px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 10;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.hero-content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 30px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
 .hero-content {
   position: relative;
   z-index: 10;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  color: #2c3e50;
+  text-shadow: none;
 }
 
 .hero-title {
@@ -196,15 +223,17 @@ onMounted(() => {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #1a202c;
+  text-shadow: none;
 }
 
 .hero-subtitle {
   font-size: 1.25rem;
   line-height: 1.6;
   margin-bottom: 2rem;
-  opacity: 0.95;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  color: #4a5568;
+  opacity: 1;
+  text-shadow: none;
 }
 
 .hero-buttons {
@@ -230,25 +259,23 @@ onMounted(() => {
 }
 
 .btn-outline-light {
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #1e7f98;
+  color: #1e7f98;
+  background: transparent;
   border-radius: 50px;
   padding: 13px 38px;
   font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .btn-outline-light:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: white;
+  background: #1e7f98;
+  border-color: #1e7f98;
   color: white;
   transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 35px rgba(30, 127, 152, 0.3);
 }
 
 .hero-features .badge {
@@ -256,12 +283,17 @@ onMounted(() => {
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 25px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(30, 127, 152, 0.15);
+  background: rgba(30, 127, 152, 0.1) !important;
+  color: #1e7f98 !important;
+  border: 1px solid rgba(30, 127, 152, 0.2);
+  transition: all 0.3s ease;
+}
+
+.hero-features .badge:hover {
+  background: rgba(30, 127, 152, 0.15) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 127, 152, 0.2);
 }
 
 /* 轮播控制器样式 */
@@ -310,6 +342,12 @@ onMounted(() => {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .hero-content-card {
+    padding: 40px 30px;
+    margin: 20px auto;
+    border-radius: 15px;
+  }
+
   .hero-title {
     font-size: 2.5rem;
   }
@@ -332,6 +370,12 @@ onMounted(() => {
 }
 
 @media (max-width: 576px) {
+  .hero-content-card {
+    padding: 30px 20px;
+    margin: 15px;
+    border-radius: 12px;
+  }
+
   .hero-title {
     font-size: 2rem;
   }
