@@ -24,7 +24,7 @@
         >
           <div class="carousel-bg" :style="{ backgroundImage: `url(${slide.image})` }"></div>
 
-          <div class="container">
+          <div class="container-fluid p-0">
             <div class="row align-items-center min-vh-80">
               <div class="col-lg-8 mx-auto text-center">
                 <div class="hero-content">
