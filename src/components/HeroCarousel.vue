@@ -309,6 +309,15 @@ onMounted(() => {
   transition: opacity 0.3s ease;
 }
 
+/* Offset controls slightly from edges to prevent border blur */
+.carousel-control-prev {
+  left: 1rem;
+}
+
+.carousel-control-next {
+  right: 1rem;
+}
+
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
   opacity: 1;
