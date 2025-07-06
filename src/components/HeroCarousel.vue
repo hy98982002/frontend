@@ -25,8 +25,8 @@
           <div class="carousel-bg" :style="{ backgroundImage: `url(${slide.image})` }"></div>
 
           <div class="container-fluid p-0">
-            <div class="row align-items-center min-vh-80">
-              <div class="col-lg-8 mx-auto text-center">
+            <div class="row align-items-center carousel-content-row">
+              <div class="col-lg-6 mx-auto">
                 <!-- 课程说明卡片背景 -->
                 <div class="hero-content-card">
                   <div class="hero-content">
@@ -46,7 +46,7 @@
                     </div>
 
                     <!-- 特色标签 -->
-                    <div class="hero-features mt-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="hero-features mt-3" data-aos="fade-up" data-aos-delay="600">
                       <span
                         v-for="feature in slide.features"
                         :key="feature"
@@ -158,9 +158,13 @@ onMounted(() => {
 <style scoped>
 .hero-carousel {
   position: relative;
-  height: 60vh;
+  /* 按原始比例1340x400设置高度，并添加导航栏间距 */
+  height: 400px;
+  max-width: 1340px;
+  margin: 80px auto 0 auto; /* 80px为导航栏高度 + 间距 */
   overflow: hidden;
-  margin-top: 0;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .carousel {
@@ -168,7 +172,7 @@ onMounted(() => {
 }
 
 .carousel-item {
-  height: 60vh;
+  height: 400px;
   position: relative;
 }
 
@@ -183,19 +187,20 @@ onMounted(() => {
   background-repeat: no-repeat;
 }
 
-.min-vh-80 {
-  min-height: 60vh;
+.carousel-content-row {
+  height: 400px;
+  margin: 0;
 }
 
-/* 课程说明卡片容器 */
+/* 课程说明卡片容器 - 调整为更合理的比例 */
 .hero-content-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 60px 40px;
-  margin: 40px auto;
-  max-width: 800px;
+  border-radius: 15px;
+  padding: 30px 25px;
+  margin: 0 auto;
+  max-width: 500px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -206,8 +211,8 @@ onMounted(() => {
 }
 
 .hero-content-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 30px rgba(0, 0, 0, 0.08),
+  transform: translateY(-3px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15), 0 6px 25px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
@@ -219,53 +224,53 @@ onMounted(() => {
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #1a202c;
   text-shadow: none;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
   color: #4a5568;
   opacity: 1;
   text-shadow: none;
 }
 
 .hero-buttons {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .btn-tech-blue {
   background: linear-gradient(135deg, #1e7f98, #2a9bb8);
   border: none;
-  border-radius: 50px;
-  padding: 15px 40px;
+  border-radius: 25px;
+  padding: 10px 25px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(30, 127, 152, 0.3);
+  box-shadow: 0 6px 20px rgba(30, 127, 152, 0.3);
 }
 
 .btn-tech-blue:hover {
   background: linear-gradient(135deg, #166d84, #228ba1);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(30, 127, 152, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 127, 152, 0.4);
 }
 
 .btn-outline-light {
   border: 2px solid #1e7f98;
   color: #1e7f98;
   background: transparent;
-  border-radius: 50px;
-  padding: 13px 38px;
+  border-radius: 25px;
+  padding: 8px 23px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
 }
@@ -274,15 +279,15 @@ onMounted(() => {
   background: #1e7f98;
   border-color: #1e7f98;
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(30, 127, 152, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 127, 152, 0.3);
 }
 
 .hero-features .badge {
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  padding: 5px 10px;
+  font-size: 0.8rem;
   font-weight: 500;
-  border-radius: 25px;
+  border-radius: 15px;
   box-shadow: 0 2px 8px rgba(30, 127, 152, 0.15);
   background: rgba(30, 127, 152, 0.1) !important;
   color: #1e7f98 !important;
@@ -311,8 +316,8 @@ onMounted(() => {
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   background-size: 60%;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.2);
@@ -322,12 +327,12 @@ onMounted(() => {
 
 /* 指示器样式 */
 .carousel-indicators {
-  bottom: 30px;
+  bottom: 20px;
 }
 
 .carousel-indicators button {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.5);
   background: transparent;
@@ -341,59 +346,81 @@ onMounted(() => {
 }
 
 /* 响应式设计 */
+@media (max-width: 1400px) {
+  .hero-carousel {
+    max-width: 95%;
+    margin: 80px auto 0 auto;
+  }
+}
+
 @media (max-width: 768px) {
+  .hero-carousel {
+    height: 350px;
+    margin: 70px 15px 0 15px;
+    border-radius: 12px;
+  }
+
+  .carousel-item {
+    height: 350px;
+  }
+
+  .carousel-content-row {
+    height: 350px;
+  }
+
   .hero-content-card {
-    padding: 40px 30px;
-    margin: 20px auto;
-    border-radius: 15px;
+    padding: 25px 20px;
+    margin: 0 10px;
+    border-radius: 12px;
+    max-width: 90%;
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
 
   .btn-tech-blue,
   .btn-outline-light {
-    padding: 12px 30px;
-    font-size: 1rem;
-    margin-bottom: 10px;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
   }
 
   .hero-features .badge {
-    font-size: 0.8rem;
-    padding: 6px 12px;
+    font-size: 0.75rem;
+    padding: 4px 8px;
   }
 }
 
 @media (max-width: 576px) {
-  .hero-content-card {
-    padding: 30px 20px;
-    margin: 15px;
-    border-radius: 12px;
-  }
-
-  .hero-title {
-    font-size: 2rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
   .hero-carousel {
-    height: 50vh;
+    height: 300px;
+    margin: 65px 10px 0 10px;
   }
 
   .carousel-item {
-    height: 50vh;
+    height: 300px;
   }
 
-  .min-vh-80 {
-    min-height: 50vh;
+  .carousel-content-row {
+    height: 300px;
+  }
+
+  .hero-content-card {
+    padding: 20px 15px;
+    border-radius: 10px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
   }
 }
 
