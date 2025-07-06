@@ -165,15 +165,45 @@ onMounted(() => {
   overflow: hidden;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  /* 强力修复边缘虚化问题 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+
+  /* 强制像素对齐 */
+  left: 0;
+  top: 0;
+
+  /* 禁用亚像素渲染 */
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+
+  /* 强制边缘清晰 */
+  outline: 1px solid transparent;
+
+  /* 确保容器在像素边界上 */
+  width: 100%;
+  contain: layout style paint;
 }
 
 .carousel {
   height: 100%;
+  /* 确保轮播容器边缘清晰 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .carousel-item {
   height: 400px;
   position: relative;
+  /* 防止边缘模糊 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .carousel-bg {
@@ -185,6 +215,20 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  /* 强力修复背景图片边缘虚化 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+
+  /* 强制图片边缘清晰 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+
+  /* 确保背景图片像素对齐 */
+  background-attachment: local;
+  contain: layout style paint;
 }
 
 .carousel-content-row {
@@ -299,6 +343,53 @@ onMounted(() => {
   background: rgba(30, 127, 152, 0.15) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(30, 127, 152, 0.2);
+}
+
+/* 专用边缘清晰化修复 */
+.hero-carousel *,
+.hero-carousel *::before,
+.hero-carousel *::after {
+  /* 强制所有子元素使用硬件加速 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: auto;
+
+  /* 禁用子像素渲染 */
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+
+  /* 强制边缘对齐 */
+  box-sizing: border-box;
+
+  /* 强制像素完美边缘 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+
+/* 专门解决左下角虚化问题 */
+.hero-carousel {
+  /* 额外的边缘修复属性 */
+  isolation: isolate;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* 针对左下角和左侧边缘的特殊修复 */
+.hero-carousel::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: -1;
+  /* 创建一个稍大的透明边框来强制边缘对齐 */
+  border: 1px solid transparent;
+  background: transparent;
 }
 
 /* 轮播控制器样式 */
@@ -433,15 +524,17 @@ onMounted(() => {
   }
 }
 
-/* 动画效果 */
+/* 动画效果 - 确保动画也不会造成边缘虚化 */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translate3d(0, 30px, 0);
+    -webkit-transform: translate3d(0, 30px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
   }
 }
 

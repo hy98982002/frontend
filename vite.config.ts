@@ -8,5 +8,16 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
+  },
+  build: {
+    target: 'es2015',
+    outDir: 'dist',
+    sourcemap: false,
+    minify: 'esbuild'
+  },
+  server: {
+    port: 5173,
+    host: true,
+    cors: true
   }
 })

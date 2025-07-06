@@ -12,23 +12,19 @@
         @watch-now="handleWatchNow"
       />
     </div>
-    
+
     <!-- 空状态 -->
     <div v-else class="text-center py-5">
       <div class="empty-state">
-        <i class="fas fa-graduation-cap text-muted mb-3" style="font-size: 3rem;"></i>
+        <i class="fas fa-graduation-cap text-muted mb-3" style="font-size: 3rem"></i>
         <h5 class="text-muted">暂无课程</h5>
         <p class="text-muted">该分类下暂时没有可用的课程</p>
       </div>
     </div>
-    
+
     <!-- 加载更多按钮 -->
     <div v-if="showLoadMore" class="text-center mt-4">
-      <button 
-        class="btn btn-outline-primary btn-lg"
-        @click="handleLoadMore"
-        :disabled="loading"
-      >
+      <button class="btn btn-outline-primary btn-lg" @click="handleLoadMore" :disabled="loading">
         <i v-if="loading" class="fas fa-spinner fa-spin me-2"></i>
         {{ loading ? '加载中...' : '查看更多课程' }}
       </button>
@@ -48,11 +44,7 @@ interface Props {
   loading?: boolean
 }
 
-const { courses, stage, showLoadMore, loading } = withDefaults(defineProps<Props>(), {
-  stage: undefined,
-  showLoadMore: false,
-  loading: false
-})
+const { courses, stage = undefined, showLoadMore = false, loading = false } = defineProps<Props>()
 
 // Emits定义
 const emit = defineEmits<{
@@ -112,9 +104,9 @@ const handleLoadMore = () => {
   .course-grid .row {
     margin: 0 -0.5rem;
   }
-  
+
   .course-grid .row > * {
     padding: 0 0.5rem;
   }
 }
-</style> 
+</style>
