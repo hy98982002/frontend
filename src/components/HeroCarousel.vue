@@ -22,7 +22,9 @@
           class="carousel-item"
           :class="{ active: index === 0 }"
         >
-          <div class="carousel-bg" :style="{ backgroundImage: `url(${slide.image})` }"></div>
+          <div class="carousel-bg">
+            <img :src="slide.image" alt="" class="carousel-img" />
+          </div>
 
           <div class="container-fluid p-0">
             <div class="row align-items-center carousel-content-row">
@@ -212,9 +214,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
 
   /* 强力修复背景图片边缘虚化 */
   transform: translate3d(0, 0, 0);
@@ -226,9 +226,14 @@ onMounted(() => {
   image-rendering: crisp-edges;
   image-rendering: pixelated;
 
-  /* 确保背景图片像素对齐 */
-  background-attachment: local;
   contain: layout style paint;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .carousel-content-row {
@@ -376,21 +381,6 @@ onMounted(() => {
   -webkit-perspective: 1000px;
 }
 
-/* 针对左下角和左侧边缘的特殊修复 */
-.hero-carousel::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  border-radius: 16px;
-  pointer-events: none;
-  z-index: -1;
-  /* 创建一个稍大的透明边框来强制边缘对齐 */
-  border: 1px solid transparent;
-  background: transparent;
-}
 
 /* 轮播控制器样式 */
 .carousel-control-prev,
