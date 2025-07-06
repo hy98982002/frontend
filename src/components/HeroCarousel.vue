@@ -1,5 +1,5 @@
 <template>
-  <section class="hero-carousel">
+  <section class="hero-carousel edge-fix">
     <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <!-- 轮播指示器 -->
       <div class="carousel-indicators">
@@ -168,25 +168,54 @@ onMounted(() => {
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
-  /* 强力修复边缘虚化问题 */
+  /* === 强力修复边缘虚化问题 === */
+
+  /* 1. 强制硬件加速和像素对齐 */
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   will-change: transform;
 
-  /* 强制像素对齐 */
+  /* 2. 强制整数像素位置 */
   left: 0;
   top: 0;
 
-  /* 禁用亚像素渲染 */
+  /* 3. 禁用亚像素渲染 */
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: auto;
 
-  /* 强制边缘清晰 */
+  /* 4. 强制边缘清晰 - 关键修复 */
   outline: 1px solid transparent;
 
-  /* 确保容器在像素边界上 */
+  /* 5. 确保容器在像素边界上 */
   width: 100%;
   contain: layout style paint;
+
+  /* 6. 强制边缘像素完美对齐 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+
+  /* 7. 强制浏览器渲染优化 */
+  isolation: isolate;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+
+  /* 8. 强制GPU层合成 */
+  filter: blur(0);
+
+  /* 9. 修复Safari边缘虚化 */
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+
+  /* 10. 防止边缘反锯齿 */
+  shape-rendering: crispEdges;
+
+  /* 11. 强制边界框精确计算 */
+  box-sizing: border-box;
+
+  /* 12. 额外的边缘修复 */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .carousel {
@@ -216,17 +245,38 @@ onMounted(() => {
   height: 100%;
   overflow: hidden;
 
-  /* 强力修复背景图片边缘虚化 */
+  /* === 强力修复背景图片边缘虚化 === */
+
+  /* 1. 硬件加速 */
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   will-change: transform;
 
-  /* 强制图片边缘清晰 */
+  /* 2. 强制图片边缘清晰 */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
-  image-rendering: pixelated;
 
+  /* 3. 布局优化 */
   contain: layout style paint;
+
+  /* 4. 强制精确边界 */
+  box-sizing: border-box;
+
+  /* 5. 禁用边缘平滑 */
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  /* 6. 强制像素边界对齐 */
+  outline: 1px solid transparent;
+
+  /* 7. 修复边缘模糊 */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* 8. 强制GPU渲染 */
+  filter: blur(0);
+
+  /* 9. 边缘锐化 */
+  shape-rendering: crispEdges;
 }
 
 .carousel-img {
@@ -234,6 +284,41 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   display: block;
+
+  /* === 图片边缘锐化修复 === */
+
+  /* 1. 强制像素精确渲染 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+
+  /* 2. 硬件加速 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+
+  /* 3. 强制边缘对齐 */
+  outline: 1px solid transparent;
+
+  /* 4. 禁用边缘平滑 */
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  /* 5. 强制像素边界 */
+  box-sizing: border-box;
+
+  /* 6. 修复边缘虚化 */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* 7. 强制GPU层 */
+  filter: blur(0);
+
+  /* 8. 边缘锐化 */
+  shape-rendering: crispEdges;
+
+  /* 9. 防止子像素移动 */
+  position: relative;
+  top: 0;
+  left: 0;
 }
 
 .carousel-content-row {
@@ -350,11 +435,13 @@ onMounted(() => {
   box-shadow: 0 4px 12px rgba(30, 127, 152, 0.2);
 }
 
-/* 专用边缘清晰化修复 */
+/* === 终极边缘虚化修复方案 === */
+
+/* 1. 全局子元素边缘锐化 */
 .hero-carousel *,
 .hero-carousel *::before,
 .hero-carousel *::after {
-  /* 强制所有子元素使用硬件加速 */
+  /* 强制硬件加速 */
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   will-change: auto;
@@ -368,19 +455,43 @@ onMounted(() => {
 
   /* 强制像素完美边缘 */
   image-rendering: -webkit-optimize-contrast;
-  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 防止边缘模糊 */
+  outline: 1px solid transparent;
 }
 
-/* 专门解决左下角虚化问题 */
-.hero-carousel {
-  /* 额外的边缘修复属性 */
-  isolation: isolate;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
+/* 2. 专门解决左边和底边虚化问题 */
+.hero-carousel::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: -1;
+  background: transparent;
+  border: 1px solid transparent;
+  transform: translate3d(0, 0, 0);
 }
 
+/* 3. 强制容器边缘精确渲染 */
+.hero-carousel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: 1000;
+  background: transparent;
+  outline: 1px solid transparent;
+  transform: translate3d(0, 0, 0);
+}
 
 /* 轮播控制器样式 */
 .carousel-control-prev,
@@ -433,6 +544,65 @@ onMounted(() => {
   background: white;
   border-color: white;
   transform: scale(1.2);
+}
+
+/* === Mac设备专用边缘修复 === */
+@media (-webkit-min-device-pixel-ratio: 2) {
+  .hero-carousel {
+    /* Mac Retina显示器专用修复 */
+    -webkit-transform: translate3d(0.5px, 0.5px, 0);
+    transform: translate3d(0.5px, 0.5px, 0);
+
+    /* 强制子像素渲染对齐 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .carousel-img {
+    /* 高DPI屏幕图片锐化 */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+  }
+}
+
+/* === 针对Safari浏览器的特殊修复 === */
+@supports (-webkit-appearance: none) {
+  .hero-carousel {
+    /* Safari专用边缘修复 */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+}
+
+/* === 终极边缘修复类 === */
+.edge-fix {
+  /* 强制整数像素位置 */
+  position: relative;
+  top: 0;
+  left: 0;
+
+  /* 强制像素完美边缘 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  /* 修复子像素偏移 */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  /* 强制GPU渲染 */
+  will-change: transform;
+
+  /* 边缘锐化 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+
+  /* 防止边缘模糊 */
+  filter: blur(0);
+
+  /* 强制边界对齐 */
+  outline: 1px solid transparent;
 }
 
 /* 响应式设计 */
