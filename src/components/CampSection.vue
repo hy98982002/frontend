@@ -1,36 +1,42 @@
 <template>
-  <section id="courses" class="courses-section py-5">
+  <section id="courses" class="courses-section courses-section-compact">
     <div class="container">
       <!-- 区域标题 -->
-      <div class="row mb-5">
-        <div class="col-12 text-center">
-          <h2 class="section-title" data-aos="fade-up">
+      <!-- 体验专区上升 -->
+      <div class="row mb-3" style="margin-top: -0.3rem">
+        <div class="col-12">
+          <h2 class="section-title text-start" data-aos="fade-up">
             <span class="title-highlight">精品课程</span>
-            <span class="title-subtitle">助力你的技术成长之路</span>
+            <!-- <span class="title-subtitle">助力你的技术成长之路</span> -->
           </h2>
-          <p class="section-description" data-aos="fade-up" data-aos-delay="200">
+          <p class="section-description text-start" data-aos="fade-up" data-aos-delay="200">
             从入门到精通，从理论到实战，系统化的学习路径让你快速掌握前沿技术
           </p>
         </div>
       </div>
 
       <!-- 阶段切换标签 -->
-      <div class="row mb-4">
+      <div class="row mb-1" style="margin-top: 1.6rem">
         <div class="col-12">
-          <StageTabs v-model="currentStage" />
+          <StageTabs
+            v-model="currentStage"
+            :show-vip-only="showVipOnly"
+            @update:show-vip-only="handleVipToggle"
+          />
         </div>
       </div>
 
       <!-- 热门标签（可选展示） -->
-      <div class="row mb-4" v-if="showPopularTags && popularTags.length > 0">
+      <!-- 热门技术移动 -->
+      <div class="row" style="margin-top: 0rem" v-if="showPopularTags && popularTags.length > 0">
         <div class="col-12">
-          <div class="hot-keywords text-center">
+          <div class="hot-keywords text-start">
             <span class="hot-label me-3">热门技术：</span>
-            <span 
-              v-for="tag in popularTags.slice(0, 8)" 
+            <span
+              v-for="tag in popularTags.slice(0, 8)"
               :key="tag"
               class="badge badge-tag me-2 mb-2"
-              :class="{ 'active': selectedTags.includes(tag) }"
+              :class="{ active: selectedTags.includes(tag) }"
               @click="toggleTag(tag)"
               role="button"
               tabindex="0"
@@ -39,7 +45,7 @@
             >
               {{ tag }}
             </span>
-            <button 
+            <button
               v-if="selectedTags.length > 0"
               class="btn btn-sm btn-outline-secondary ms-2"
               @click="clearFilters"
@@ -50,7 +56,8 @@
         </div>
       </div>
 
-      <!-- 当前阶段信息展示 -->
+      <!-- 当前阶段信息展示 - 已注释，将来可能放在按钮提示弹出框中 -->
+      <!-- 
       <div class="row mb-4">
         <div class="col-12">
           <div class="stage-info text-center">
@@ -73,11 +80,12 @@
           </div>
         </div>
       </div>
+      -->
 
       <!-- 课程网格 -->
       <div class="row">
         <div class="col-12">
-          <CourseGrid 
+          <CourseGrid
             :courses="displayedCourses"
             :stage="currentStage"
             :show-load-more="hasMoreCourses"
@@ -92,8 +100,8 @@
 
       <!-- 换一换按钮 -->
       <div class="row mt-4" v-if="!showAllCourses && filteredCourses.length > displayCount">
-        <div class="col-12 text-center">
-          <button 
+        <div class="col-12 text-start">
+          <button
             class="btn btn-outline-tech-blue btn-lg"
             @click="shuffleCourses"
             :disabled="loading"
@@ -106,9 +114,9 @@
 
       <!-- 查看更多课程 -->
       <div class="row mt-5" v-if="!showAllCourses">
-        <div class="col-12 text-center">
-          <a 
-            href="#courses" 
+        <div class="col-12 text-start">
+          <a
+            href="#courses"
             class="btn btn-tech-blue btn-lg"
             @click="showAllCourses = true"
             data-track="click_more"
@@ -149,6 +157,7 @@ const currentStage = ref<StageKey>('free')
 const displayCount = ref(props.initialDisplayCount)
 const showAllCourses = ref(false)
 const loading = ref(false)
+const showVipOnly = computed(() => courseStore.showVipOnly)
 
 // 计算属性
 const filteredCourses = computed(() => {
@@ -171,13 +180,21 @@ const popularTags = computed(() => courseStore.popularTags)
 const selectedTags = computed(() => courseStore.selectedTags)
 
 const stageInfo = computed(() => {
+  // 如果是会员专区模式，返回会员专区信息
+  if (showVipOnly.value) {
+    return {
+      title: '会员专享课程',
+      description: '专为会员打造的高级课程，享受更深度的技术内容和专属服务'
+    }
+  }
+
   const stageData = {
     free: {
       title: '免费体验专区',
       description: '精选免费课程，零门槛开始你的技术学习之旅'
     },
     basic: {
-      title: '入门学习专区', 
+      title: '入门学习专区',
       description: '系统化基础课程，为初学者量身定制的学习路径'
     },
     advanced: {
@@ -244,8 +261,12 @@ const loadMoreCourses = () => {
   displayCount.value += props.initialDisplayCount
 }
 
+const handleVipToggle = (vipOnly: boolean) => {
+  courseStore.setShowVipOnly(vipOnly)
+}
+
 // 监听阶段变化
-watch(currentStage, (newStage) => {
+watch(currentStage, newStage => {
   courseStore.setCurrentStage(newStage)
   displayCount.value = props.initialDisplayCount
   showAllCourses.value = false
@@ -254,24 +275,28 @@ watch(currentStage, (newStage) => {
 
 <style scoped>
 .courses-section {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
-    rgba(245, 248, 255, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 248, 255, 0.95) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   min-height: 80vh;
+}
+
+.courses-section-compact {
+  padding-top: 18px;
+  padding-bottom: 5rem;
 }
 
 /* 标题样式 */
 .section-title {
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  /* 入门到精通上升 */
+  margin-bottom: 0.4rem;
   position: relative;
 }
 
 .title-highlight {
-  background: linear-gradient(135deg, #1E7F98, #2A9BB8);
+  background: linear-gradient(135deg, #1e7f98, #2a9bb8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -290,8 +315,9 @@ watch(currentStage, (newStage) => {
   font-size: 1.1rem;
   color: #666;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0;
   line-height: 1.6;
+  margin-top: -0.2rem;
 }
 
 /* 热门标签样式 */
@@ -306,13 +332,13 @@ watch(currentStage, (newStage) => {
 
 .hot-label {
   font-weight: 600;
-  color: #1E7F98;
+  color: #1e7f98;
   font-size: 1rem;
 }
 
 .badge-tag {
   background: rgba(30, 127, 152, 0.1);
-  color: #1E7F98;
+  color: #1e7f98;
   border: 2px solid rgba(30, 127, 152, 0.2);
   padding: 8px 16px;
   font-size: 0.9rem;
@@ -330,9 +356,9 @@ watch(currentStage, (newStage) => {
 }
 
 .badge-tag.active {
-  background: #1E7F98;
+  background: #1e7f98;
   color: white;
-  border-color: #1E7F98;
+  border-color: #1e7f98;
 }
 
 /* 阶段信息样式 */
@@ -349,7 +375,7 @@ watch(currentStage, (newStage) => {
 .stage-title {
   font-size: 2rem;
   font-weight: 600;
-  color: #1E7F98;
+  color: #1e7f98;
   margin-bottom: 0.5rem;
 }
 
@@ -367,18 +393,18 @@ watch(currentStage, (newStage) => {
 }
 
 .stat-item {
-  color: #1E7F98;
+  color: #1e7f98;
   font-weight: 500;
   font-size: 1rem;
 }
 
 .stat-item i {
-  color: #2A9BB8;
+  color: #2a9bb8;
 }
 
 /* 按钮样式 */
 .btn-tech-blue {
-  background: linear-gradient(135deg, #1E7F98, #2A9BB8);
+  background: linear-gradient(135deg, #1e7f98, #2a9bb8);
   border: none;
   border-radius: 50px;
   padding: 15px 40px;
@@ -398,8 +424,8 @@ watch(currentStage, (newStage) => {
 }
 
 .btn-outline-tech-blue {
-  border: 2px solid #1E7F98;
-  color: #1E7F98;
+  border: 2px solid #1e7f98;
+  color: #1e7f98;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 50px;
   padding: 13px 38px;
@@ -412,8 +438,8 @@ watch(currentStage, (newStage) => {
 }
 
 .btn-outline-tech-blue:hover {
-  background: #1E7F98;
-  border-color: #1E7F98;
+  background: #1e7f98;
+  border-color: #1e7f98;
   color: white;
   transform: translateY(-3px);
 }
@@ -423,20 +449,20 @@ watch(currentStage, (newStage) => {
   .section-title {
     font-size: 2.2rem;
   }
-  
+
   .stage-stats {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .stage-info {
     padding: 1.5rem;
   }
-  
+
   .hot-keywords {
     padding: 1rem;
   }
-  
+
   .badge-tag {
     font-size: 0.8rem;
     padding: 6px 12px;
@@ -447,19 +473,19 @@ watch(currentStage, (newStage) => {
   .section-title {
     font-size: 1.8rem;
   }
-  
+
   .title-subtitle {
     font-size: 1rem;
   }
-  
+
   .stage-title {
     font-size: 1.5rem;
   }
-  
+
   .btn-tech-blue,
   .btn-outline-tech-blue {
     padding: 12px 30px;
     font-size: 1rem;
   }
 }
-</style> 
+</style>

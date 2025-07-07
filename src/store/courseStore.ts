@@ -10,7 +10,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 1,
       title: 'Python基础入门教程',
-      cover: '/images/py01.jpg',
+      cover: '/images/tiyan-python-cover.jpg',
       stage: 'free',
       camp: 'skill',
       tags: ['Python', '基础', '编程入门'],
@@ -27,7 +27,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 2,
       title: 'HTML5与CSS3快速上手',
-      cover: '/images/u01.jpg',
+      cover: '/images/tiyan-xuhuan-cover.jpg',
       stage: 'free',
       camp: 'skill',
       tags: ['HTML', 'CSS', 'Web开发'],
@@ -43,7 +43,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 3,
       title: 'JavaScript ES6基础',
-      cover: '/images/u02.jpg',
+      cover: '/images/tiyan-photoshop-cover.jpg',
       stage: 'free',
       camp: 'skill',
       tags: ['JavaScript', 'ES6', '前端'],
@@ -59,7 +59,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 4,
       title: 'Git版本控制系统',
-      cover: '/images/u03.jpg',
+      cover: '/images/rumen-python-cover.jpg',
       stage: 'free',
       camp: 'skill',
       tags: ['Git', '版本控制', '开发工具'],
@@ -77,7 +77,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 5,
       title: 'Python Web开发入门',
-      cover: '/images/py02.jpg',
+      cover: '/images/rumen-python-cover.jpg',
       stage: 'basic',
       camp: 'skill',
       tags: ['Python', 'Django', 'Web开发'],
@@ -94,7 +94,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 6,
       title: 'Vue 3全栈开发',
-      cover: '/images/u04.jpg',
+      cover: '/images/rumen-xuhuan-cover.jpg.jpg',
       stage: 'basic',
       camp: 'skill',
       tags: ['Vue', '前端框架', '全栈'],
@@ -110,7 +110,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 7,
       title: 'React现代化开发',
-      cover: '/images/l01.jpg',
+      cover: '/images/rumen-photoshop-cover.jpg.jpg',
       stage: 'basic',
       camp: 'skill',
       tags: ['React', 'Hooks', '前端'],
@@ -126,7 +126,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 8,
       title: 'MySQL数据库设计',
-      cover: '/images/l02.jpg',
+      cover: '/images/jingjin-python-cover.jpg',
       stage: 'basic',
       camp: 'skill',
       tags: ['MySQL', '数据库', 'SQL'],
@@ -144,7 +144,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 9,
       title: 'Python高级编程与设计模式',
-      cover: '/images/py03.jpg',
+      cover: '/images/jingjin-python-cover.jpg',
       stage: 'advanced',
       camp: 'skill',
       tags: ['Python', '设计模式', '高级编程'],
@@ -156,12 +156,13 @@ export const useCourseStore = defineStore('course', () => {
       duration: '35 小时',
       level: '中级',
       instructor: '李资深工程师',
-      badge: '进阶必学'
+      badge: '进阶必学',
+      isVip: true
     },
     {
       id: 10,
       title: '微服务架构实战',
-      cover: '/images/l03.jpg',
+      cover: '/images/jingjin-xuhuan-cover.jpg.jpg',
       stage: 'advanced',
       camp: 'career',
       tags: ['微服务', '架构', 'Spring Cloud'],
@@ -172,12 +173,13 @@ export const useCourseStore = defineStore('course', () => {
       reviewCount: 28,
       duration: '40 小时',
       level: '中级',
-      instructor: '张架构师'
+      instructor: '张架构师',
+      isVip: true
     },
     {
       id: 11,
       title: 'Kubernetes容器编排',
-      cover: '/images/k01.png',
+      cover: '/images/jingjin-photoshop-cover.jpg.jpg',
       stage: 'advanced',
       camp: 'career',
       tags: ['Kubernetes', 'Docker', '容器化'],
@@ -193,7 +195,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 12,
       title: 'AI机器学习算法深度解析',
-      cover: '/images/ai01.jpg',
+      cover: '/images/shizhan-python-cover.jpg',
       stage: 'advanced',
       camp: 'enterprise',
       tags: ['机器学习', 'AI', '算法'],
@@ -212,7 +214,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 13,
       title: '电商系统全栈项目实战',
-      cover: '/images/py04.jpg',
+      cover: '/images/shizhan-python-cover.jpg',
       stage: 'project',
       camp: 'career',
       tags: ['全栈', '电商', '项目实战'],
@@ -229,7 +231,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 14,
       title: '大数据处理平台搭建',
-      cover: '/images/ai02.jpg',
+      cover: '/images/shizhan-xuhuan-cover.jpg.jpg',
       stage: 'project',
       camp: 'enterprise',
       tags: ['大数据', 'Spark', 'Hadoop'],
@@ -240,12 +242,13 @@ export const useCourseStore = defineStore('course', () => {
       reviewCount: 12,
       duration: '55 小时',
       level: '实战级',
-      instructor: '孙大数据专家'
+      instructor: '孙大数据专家',
+      isVip: true
     },
     {
       id: 15,
       title: '企业级DevOps流水线',
-      cover: '/images/k02.png',
+      cover: '/images/shizhan-photoshop-cover.jpg.jpg',
       stage: 'project',
       camp: 'enterprise',
       tags: ['DevOps', 'CI/CD', '自动化'],
@@ -261,7 +264,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 16,
       title: '智能聊天机器人开发',
-      cover: '/images/ai03.jpg',
+      cover: '/images/tiyan-python-cover.jpg',
       stage: 'project',
       camp: 'enterprise',
       tags: ['AI', 'NLP', '聊天机器人'],
@@ -273,7 +276,8 @@ export const useCourseStore = defineStore('course', () => {
       duration: '65 小时',
       level: '实战级',
       instructor: '王AI架构师',
-      badge: '最新技术'
+      badge: '最新技术',
+      isVip: true
     }
   ])
 
@@ -286,6 +290,9 @@ export const useCourseStore = defineStore('course', () => {
   // 选中的标签
   const selectedTags = ref<string[]>([])
 
+  // 是否只显示会员专享课程
+  const showVipOnly = ref(false)
+
   // 计算属性：根据阶段筛选课程
   const coursesByStage = computed(() => {
     return courses.value.filter(course => course.stage === currentStage.value)
@@ -294,6 +301,11 @@ export const useCourseStore = defineStore('course', () => {
   // 计算属性：根据搜索条件筛选课程
   const filteredCourses = computed(() => {
     let result = coursesByStage.value
+
+    // 会员专区筛选 - 优先级最高
+    if (showVipOnly.value) {
+      result = result.filter(course => course.isVip === true)
+    }
 
     // 关键词搜索
     if (searchKeyword.value) {
@@ -390,6 +402,16 @@ export const useCourseStore = defineStore('course', () => {
   const clearFilters = () => {
     searchKeyword.value = ''
     selectedTags.value = []
+    showVipOnly.value = false
+  }
+
+  const setShowVipOnly = (vipOnly: boolean) => {
+    showVipOnly.value = vipOnly
+    // 开启会员专区时清空其他筛选条件
+    if (vipOnly) {
+      searchKeyword.value = ''
+      selectedTags.value = []
+    }
   }
 
   // 获取课程详情
@@ -409,6 +431,7 @@ export const useCourseStore = defineStore('course', () => {
     currentStage,
     searchKeyword,
     selectedTags,
+    showVipOnly,
 
     // 计算属性
     coursesByStage,
@@ -422,6 +445,7 @@ export const useCourseStore = defineStore('course', () => {
     setSearchKeyword,
     toggleTag,
     clearFilters,
+    setShowVipOnly,
     getCourseById,
     addCourse
   }

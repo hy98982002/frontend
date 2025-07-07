@@ -4,7 +4,8 @@
     <HeroCarousel />
 
     <!-- 课程专区 -->
-    <div style="padding-top: 76px">
+    <!-- 整体移动，让‘精品课程’距离轮播图只有6px -->
+    <div style="padding-top: 6px">
       <CampSection :show-popular-tags="true" :initial-display-count="8" />
     </div>
 

@@ -1,14 +1,14 @@
 // 课程阶段枚举 - 统一管理所有可能的阶段
 export const STAGES = {
   free: '体验',
-  basic: '入门', 
+  basic: '入门',
   advanced: '精进',
   project: '实战',
   landing: '项目落地'
 } as const
 
 export type StageKey = keyof typeof STAGES
-export type StageValue = typeof STAGES[StageKey]
+export type StageValue = (typeof STAGES)[StageKey]
 
 // 阶段样式映射
 export const STAGE_STYLES = {
@@ -18,6 +18,115 @@ export const STAGE_STYLES = {
   project: { textClass: 'text-warning', bgClass: 'bg-warning-subtle', label: '实战' },
   landing: { textClass: 'text-danger', bgClass: 'bg-danger-subtle', label: '项目落地' }
 } as const
+
+// 课程卡片模板类型
+export type CourseCardTemplate =
+  | 'tiyan'
+  | 'rumen'
+  | 'jingjin'
+  | 'shizhan'
+  | 'xiangmushizhan'
+  | 'huiyuan'
+
+// 课程卡片模板配置
+export interface CourseCardConfig {
+  level: string // 等级标签 (体验、入门、精进、实战等)
+  priceRange: [number, number] // 价格范围 [最小值, 最大值]
+  learnerRange: [number, number] // 学员数范围
+  isFree: boolean // 是否免费
+  isVip: boolean // 是否会员专享
+  levelStyle: 'success' | 'primary' | 'info' | 'warning' | 'danger' // 等级标签样式
+}
+
+// 课程卡片模板映射
+export const COURSE_CARD_TEMPLATES: Record<CourseCardTemplate, CourseCardConfig> = {
+  tiyan: {
+    level: '体验',
+    priceRange: [0, 0],
+    learnerRange: [180, 280],
+    isFree: true,
+    isVip: false,
+    levelStyle: 'success'
+  },
+  rumen: {
+    level: '入门',
+    priceRange: [99, 299],
+    learnerRange: [120, 220],
+    isFree: false,
+    isVip: false,
+    levelStyle: 'primary'
+  },
+  jingjin: {
+    level: '精进',
+    priceRange: [199, 399],
+    learnerRange: [100, 200],
+    isFree: false,
+    isVip: false,
+    levelStyle: 'info'
+  },
+  shizhan: {
+    level: '实战',
+    priceRange: [99, 199],
+    learnerRange: [200, 400],
+    isFree: false,
+    isVip: false,
+    levelStyle: 'warning'
+  },
+  xiangmushizhan: {
+    level: '项目实战',
+    priceRange: [299, 599],
+    learnerRange: [80, 150],
+    isFree: false,
+    isVip: false,
+    levelStyle: 'danger'
+  },
+  huiyuan: {
+    level: '会员专享',
+    priceRange: [0, 0],
+    learnerRange: [50, 120],
+    isFree: true,
+    isVip: true,
+    levelStyle: 'warning'
+  }
+}
+
+// 从图片路径提取模板类型的函数
+export function getTemplateFromImagePath(imagePath: string): CourseCardTemplate {
+  const filename = imagePath.split('/').pop() || ''
+
+  if (filename.startsWith('tiyan-')) return 'tiyan'
+  if (filename.startsWith('rumen-')) return 'rumen'
+  if (filename.startsWith('jingjin-')) return 'jingjin'
+  if (filename.startsWith('shizhan-')) return 'shizhan'
+  if (filename.startsWith('xiangmushizhan-')) return 'xiangmushizhan'
+  if (filename.startsWith('huiyuan-')) return 'huiyuan'
+
+  // 默认返回体验模板
+  return 'tiyan'
+}
+
+// 生成随机价格和学员数的工具函数
+export function generateCourseData(template: CourseCardTemplate) {
+  const config = COURSE_CARD_TEMPLATES[template]
+
+  const price = config.isFree
+    ? 0
+    : Math.floor(Math.random() * (config.priceRange[1] - config.priceRange[0] + 1)) +
+      config.priceRange[0]
+
+  const learnerCount =
+    Math.floor(Math.random() * (config.learnerRange[1] - config.learnerRange[0] + 1)) +
+    config.learnerRange[0]
+
+  return {
+    level: config.level,
+    price,
+    learnerCount,
+    isFree: config.isFree,
+    isVip: config.isVip,
+    levelStyle: config.levelStyle
+  }
+}
 
 // 课程接口
 export interface Course {
@@ -39,6 +148,7 @@ export interface Course {
   instructor?: string
   isHot?: boolean
   isFree?: boolean
+  isVip?: boolean // 是否会员专享
 }
 
 // 教师接口
@@ -117,4 +227,4 @@ export interface NavMenuItem {
   label: string
   href?: string
   children?: NavMenuItem[]
-} 
+}

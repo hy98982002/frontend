@@ -1,36 +1,29 @@
 <template>
   <div class="col-sm-6 col-md-3 mb-4">
-    <a 
-      class="card-link-no-underline" 
-      href="#" 
+    <a
+      class="card-link-no-underline"
+      href="#"
       @click.prevent="handleCardClick"
       @keydown.enter="handleCardClick"
       @keydown.space.prevent="handleCardClick"
       tabindex="0"
     >
       <div class="card h-100 card-glass">
-        <img 
-          :src="course.cover" 
-          :alt="`课程封面 - ${course.title}`"
+        <div
           class="card-img-top"
-          loading="lazy"
-        />
-        
+          :style="{ backgroundImage: `url(${course.cover})` }"
+          :aria-label="`课程封面 - ${course.title}`"
+          role="img"
+        ></div>
+
         <div class="card-body">
           <p class="card-text">{{ course.title }}</p>
-          
+
           <!-- 评分显示 -->
-          <div 
-            v-if="course.rating && course.reviewCount" 
-            class="d-flex align-items-center mt-2"
-          >
+          <div v-if="course.rating && course.reviewCount" class="d-flex align-items-center mt-2">
             <span class="text-warning fw-bold me-1">{{ course.rating }}</span>
             <div class="text-warning me-2">
-              <i 
-                v-for="star in 5" 
-                :key="star"
-                :class="getStarClass(star)"
-              ></i>
+              <i v-for="star in 5" :key="star" :class="getStarClass(star)"></i>
             </div>
             <small class="text-muted">({{ course.reviewCount }})</small>
           </div>
@@ -38,69 +31,44 @@
 
         <!-- 卡片底部信息 -->
         <div class="card-footer">
-          <span :class="stageStyle.textClass">{{ stageStyle.label }}</span>
+          <span :class="levelStyleClass">{{ displayLevel }}</span>
           <span class="text-muted ms-2">
-            <i class="fas fa-user"></i> {{ course.learnerCount }}
+            <i class="fas fa-user"></i> {{ displayLearnerCount }}
           </span>
-          
+
           <!-- 价格显示 -->
-          <span v-if="course.isFree || course.price === 0" class="text-success ms-2">
-            免费
-          </span>
-          <span v-else-if="course.price" class="text-danger ms-2">
-            ¥{{ course.price.toFixed(2) }}
-          </span>
+          <span v-if="isFreeDisplay" class="text-success ms-2"> 免费 </span>
+          <span v-else class="text-danger ms-2"> ¥{{ displayPrice }}.00 </span>
         </div>
 
         <!-- hover详情弹窗 -->
-        <div 
-          class="course-pop"
-          :class="{'force-hide': forceHidePopup}"
-          data-track="view_card"
-        >
+        <div class="course-pop" data-track="view_card">
           <h6 class="fw-bold mb-2">{{ course.title }}</h6>
-          
-          <span 
-            v-if="course.badge" 
-            class="badge bg-info mb-2"
-          >
+
+          <span v-if="course.badge" class="badge bg-info mb-2">
             {{ course.badge }}
           </span>
-          
+
           <p class="small text-muted">
             总共 {{ course.duration || '45 小时' }} · {{ course.level || '入门级别' }}
           </p>
-          
+
           <ul class="ps-3 small mb-3">
             <li>精心设计的实战课程内容</li>
             <li>从基础到进阶的系统学习</li>
             <li>实用技能快速提升</li>
-            <li v-if="course.instructor">
-              讲师：{{ course.instructor }}
-            </li>
+            <li v-if="course.instructor">讲师：{{ course.instructor }}</li>
           </ul>
-          
-          <button 
-            class="btn btn-sm btn-tech-blue d-block"
+
+          <button
+            class="btn btn-tech-blue w-100 mb-2"
             @click.stop="handleAddToCart"
             data-track="add_to_cart"
           >
             添加入购物车
           </button>
-          
-          <button 
-            class="btn btn-sm btn-watch-now d-block mt-2"
-            @click.stop="handleWatchNow"
-          >
-            立即观看
-          </button>
-          
-          <button 
-            class="close-dialog"
-            @click.stop="handleClosePopup"
-          >
-            关闭对话框
-          </button>
+
+          <button class="btn btn-watch-now w-100" @click.stop="handleWatchNow">立即观看</button>
         </div>
       </div>
     </a>
@@ -108,9 +76,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import type { Course, StageKey } from '../types'
-import { STAGE_STYLES } from '../types'
+import {
+  STAGE_STYLES,
+  getTemplateFromImagePath,
+  generateCourseData,
+  type CourseCardTemplate
+} from '../types'
 
 // Props定义
 interface Props {
@@ -132,8 +105,7 @@ const emit = defineEmits<{
   watchNow: [course: Course]
 }>()
 
-// 响应式数据
-const forceHidePopup = ref(false)
+// 响应式数据（无需额外状态）
 
 // 计算属性
 const actualStage = computed(() => stage?.value || course.value.stage)
@@ -142,10 +114,50 @@ const stageStyle = computed(() => {
   return STAGE_STYLES[actualStage.value] || STAGE_STYLES.free
 })
 
+// 根据图片路径自动获取模板类型和生成数据
+const cardTemplate = computed(() => getTemplateFromImagePath(course.value.cover))
+
+const dynamicCardData = computed(() => {
+  return generateCourseData(cardTemplate.value)
+})
+
+// 获取显示的价格（优先使用course中的价格，否则使用模板生成的）
+const displayPrice = computed(() => {
+  if (course.value.price !== undefined) return course.value.price
+  return dynamicCardData.value.price
+})
+
+// 获取显示的学员数（优先使用course中的数据，否则使用模板生成的）
+const displayLearnerCount = computed(() => {
+  return course.value.learnerCount || dynamicCardData.value.learnerCount
+})
+
+// 获取显示的等级（优先使用course中的level，否则使用模板生成的）
+const displayLevel = computed(() => {
+  return course.value.level || dynamicCardData.value.level
+})
+
+// 判断是否免费（优先使用course中的isFree，否则使用模板判断）
+const isFreeDisplay = computed(() => {
+  if (course.value.isFree !== undefined) return course.value.isFree
+  return dynamicCardData.value.isFree
+})
+
+// 判断是否会员专享
+const isVipDisplay = computed(() => {
+  return course.value.isVip || dynamicCardData.value.isVip
+})
+
+// 获取等级样式类
+const levelStyleClass = computed(() => {
+  const style = dynamicCardData.value.levelStyle
+  return `text-${style}`
+})
+
 // 星级评分显示
 const getStarClass = (star: number): string => {
   if (!course.value.rating) return 'far fa-star'
-  
+
   const rating = course.value.rating
   if (star <= Math.floor(rating)) {
     return 'fas fa-star'
@@ -167,13 +179,6 @@ const handleAddToCart = () => {
 
 const handleWatchNow = () => {
   emit('watchNow', course.value)
-}
-
-const handleClosePopup = () => {
-  forceHidePopup.value = true
-  setTimeout(() => {
-    forceHidePopup.value = false
-  }, 300)
 }
 </script>
 
@@ -200,19 +205,50 @@ const handleClosePopup = () => {
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  overflow: visible;
+  overflow: visible; /* 恢复可见，让弹出卡能显示 */
   position: relative;
+  padding: 0 !important; /* 移除所有内边距 */
+}
+
+/* 强制覆盖Bootstrap卡片样式 */
+.card-glass.card {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 18px !important;
+}
+
+.card-glass .card-img-top:first-child {
+  border-radius: 18px 18px 0 0 !important;
+  margin-top: 0 !important;
 }
 
 .card-glass:hover {
   transform: none;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
   z-index: 2000;
+  position: relative; /* 确保z-index生效 */
 }
 
 .card-img-top {
-  border-radius: 18px 18px 0 0;
+  border-radius: 18px 18px 0 0 !important;
   transition: all 0.3s ease-in-out;
+  height: 200px !important; /* 固定高度 */
+  width: 100% !important;
+  background-size: cover !important; /* 背景图片覆盖整个容器 */
+  background-position: center !important; /* 背景图片居中 */
+  background-repeat: no-repeat !important; /* 不重复 */
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important; /* 只对图片区域进行裁剪 */
+}
+
+/* 卡片主体样式 */
+.card-body {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .card-footer {
@@ -237,30 +273,78 @@ const handleClosePopup = () => {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(22, 109, 132, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
-  padding: 18px 20px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(30, 127, 152, 0.06), 0 2px 8px rgba(30, 127, 152, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  padding: 24px;
   opacity: 0;
   visibility: hidden;
   transform: translateX(12px) scale(0.96);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   z-index: 1050;
 }
 
-/* 小尖角 */
+/* 小尖角优化 */
 .course-pop::before {
-  content: "";
+  content: '';
   position: absolute;
-  left: -7px;
-  top: 120px;
-  width: 14px;
-  height: 14px;
+  left: -9px;
+  top: 30px;
+  width: 18px;
+  height: 18px;
   background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(22, 109, 132, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 127, 152, 0.08);
   border-right: none;
   border-bottom: none;
   transform: rotate(-45deg);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* 内容样式优化 */
+.course-pop h6 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.course-pop .badge {
+  background: rgba(30, 127, 152, 0.08);
+  color: #1e7f98;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.course-pop .text-muted {
+  color: #444 !important;
+  font-size: 15px;
+}
+
+.course-pop ul {
+  margin: 16px 0;
+  padding-left: 20px;
+}
+
+.course-pop ul li {
+  color: #333;
+  margin-bottom: 12px;
+  font-size: 15px;
+  position: relative;
+  list-style: none;
+}
+
+.course-pop ul li::before {
+  content: '•';
+  color: #1e7f98;
+  font-weight: bold;
+  position: absolute;
+  left: -15px;
 }
 
 /* ≥lg 屏幕启用 hover 弹窗 */
@@ -280,6 +364,17 @@ const handleClosePopup = () => {
     pointer-events: auto;
   }
 
+  /* 桥接功能 - 连接卡片和弹出卡的不可见区域 */
+  .card:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 24px;
+    height: 100%;
+    z-index: 1049;
+  }
+
   /* 右侧卡片特殊处理 */
   .col-md-3:nth-child(4n) .course-pop {
     left: auto;
@@ -291,45 +386,50 @@ const handleClosePopup = () => {
 
   .col-md-3:nth-child(4n) .course-pop::before {
     left: auto;
-    right: -8px;
+    right: -9px;
     transform: rotate(135deg);
   }
 
   .col-md-3:nth-child(4n) .card:hover .course-pop {
     transform: translateX(0) scale(1);
   }
-}
 
-/* 强制隐藏状态 */
-.course-pop.force-hide {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  transform: translateX(12px) scale(0.96) !important;
-  pointer-events: none !important;
+  /* 右侧卡片的桥接功能 */
+  .col-md-3:nth-child(4n) .card:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    width: 24px;
+    height: 100%;
+    z-index: 1049;
+  }
 }
 
 /* 按钮样式 */
-.btn-tech-blue {
-  background: #1E7F98;
-  color: #fff;
+.course-pop .btn-tech-blue {
+  background: #1e7f98;
+  color: #ffffff;
   border: none;
   border-radius: 25px;
   padding: 10px 24px;
   font-size: 15px;
   font-weight: 500;
   transition: all 0.3s ease;
+  text-transform: none;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 15px rgba(30, 127, 152, 0.2);
+  width: 100%;
 }
 
-.btn-tech-blue:hover {
+.course-pop .btn-tech-blue:hover {
   background: #166d84;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(30, 127, 152, 0.3);
-  color: #fff;
+  color: #ffffff;
 }
 
-.btn-watch-now {
+.course-pop .btn-watch-now {
   border: 1px solid #1e7f98;
   color: #333;
   background: transparent;
@@ -339,28 +439,13 @@ const handleClosePopup = () => {
   font-weight: 500;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
-.btn-watch-now:hover {
+.course-pop .btn-watch-now:hover {
   background: #1e7f98 !important;
   color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(30, 127, 152, 0.3);
 }
-
-.close-dialog {
-  color: #666;
-  font-size: 14px;
-  text-align: center;
-  display: block;
-  margin-top: 16px;
-  transition: all 0.3s ease;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.close-dialog:hover {
-  color: #1E7F98;
-}
-</style> 
+</style>
