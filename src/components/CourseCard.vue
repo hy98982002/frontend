@@ -79,10 +79,10 @@
 import { computed, toRefs } from 'vue'
 import type { Course, StageKey } from '../types'
 import {
-  STAGE_STYLES,
+  // STAGE_STYLES,  // 暂时注释未使用的导入
   getTemplateFromImagePath,
-  generateCourseData,
-  type CourseCardTemplate
+  generateCourseData
+  // type CourseCardTemplate  // 暂时注释未使用的类型
 } from '../types'
 
 // Props定义
@@ -96,7 +96,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // 解构props以便在模板中使用
-const { course, stage } = toRefs(props)
+const { course } = toRefs(props)
+// const { course, stage } = toRefs(props)  // stage暂时未使用
 
 // Emits定义
 const emit = defineEmits<{
@@ -108,11 +109,12 @@ const emit = defineEmits<{
 // 响应式数据（无需额外状态）
 
 // 计算属性
-const actualStage = computed(() => stage?.value || course.value.stage)
+// 暂时注释未使用的计算属性
+// const actualStage = computed(() => stage?.value || course.value.stage)
 
-const stageStyle = computed(() => {
-  return STAGE_STYLES[actualStage.value] || STAGE_STYLES.free
-})
+// const stageStyle = computed(() => {
+//   return STAGE_STYLES[actualStage.value] || STAGE_STYLES.free
+// })
 
 // 根据图片路径自动获取模板类型和生成数据
 const cardTemplate = computed(() => getTemplateFromImagePath(course.value.cover))
@@ -143,10 +145,10 @@ const isFreeDisplay = computed(() => {
   return dynamicCardData.value.isFree
 })
 
-// 判断是否会员专享
-const isVipDisplay = computed(() => {
-  return course.value.isVip || dynamicCardData.value.isVip
-})
+// 暂时注释未使用的计算属性
+// const isVipDisplay = computed(() => {
+//   return course.value.isVip || dynamicCardData.value.isVip
+// })
 
 // 获取等级样式类
 const levelStyleClass = computed(() => {

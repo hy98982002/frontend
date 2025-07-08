@@ -181,59 +181,61 @@ const hasMoreCourses = computed(() => {
 const popularTags = computed(() => courseStore.popularTags)
 const selectedTags = computed(() => courseStore.selectedTags)
 
-const stageInfo = computed(() => {
-  // 如果是会员专区模式，返回会员专区信息
-  if (showVipOnly.value) {
-    return {
-      title: '会员专享课程',
-      description: '专为会员打造的高级课程，享受更深度的技术内容和专属服务'
-    }
-  }
+// 暂时注释未使用的计算属性，将来可能会用到
+// const stageInfo = computed(() => {
+//   // 如果是会员专区模式，返回会员专区信息
+//   if (showVipOnly.value) {
+//     return {
+//       title: '会员专享课程',
+//       description: '专为会员打造的高级课程，享受更深度的技术内容和专属服务'
+//     }
+//   }
 
-  const stageData = {
-    free: {
-      title: '免费体验专区',
-      description: '精选免费课程，零门槛开始你的技术学习之旅'
-    },
-    basic: {
-      title: '入门学习专区',
-      description: '系统化基础课程，为初学者量身定制的学习路径'
-    },
-    advanced: {
-      title: '进阶提升专区',
-      description: '深度技术课程，提升你的专业技能和竞争力'
-    },
-    project: {
-      title: '项目实战专区',
-      description: '真实项目实战，将理论知识转化为实际开发能力'
-    },
-    landing: {
-      title: '项目落地专区',
-      description: '企业级项目实战，将技术应用于真实业务场景'
-    }
-  } as const
-  return stageData[currentStage.value] || stageData.free
-})
+//   const stageData = {
+//     free: {
+//       title: '免费体验专区',
+//       description: '精选免费课程，零门槛开始你的技术学习之旅'
+//     },
+//     basic: {
+//       title: '入门学习专区',
+//       description: '系统化基础课程，为初学者量身定制的学习路径'
+//     },
+//     advanced: {
+//       title: '进阶提升专区',
+//       description: '深度技术课程，提升你的专业技能和竞争力'
+//     },
+//     project: {
+//       title: '项目实战专区',
+//       description: '真实项目实战，将理论知识转化为实际开发能力'
+//     },
+//     landing: {
+//       title: '项目落地专区',
+//       description: '企业级项目实战，将技术应用于真实业务场景'
+//     }
+//   } as const
+//   return stageData[currentStage.value] || stageData.free
+// })
 
-const totalLearners = computed(() => {
-  return filteredCourses.value.reduce((sum, course) => sum + course.learnerCount, 0)
-})
+// const totalLearners = computed(() => {
+//   return filteredCourses.value.reduce((sum, course) => sum + course.learnerCount, 0)
+// })
 
-const averageRating = computed(() => {
-  const validRatings = filteredCourses.value.filter(course => course.rating)
-  if (validRatings.length === 0) return 0
-  const sum = validRatings.reduce((sum, course) => sum + (course.rating || 0), 0)
-  return sum / validRatings.length
-})
+// const averageRating = computed(() => {
+//   const validRatings = filteredCourses.value.filter(course => course.rating)
+//   if (validRatings.length === 0) return 0
+//   const sum = validRatings.reduce((sum, course) => sum + (course.rating || 0), 0)
+//   return sum / validRatings.length
+// })
 
 // 方法
 const toggleTag = (tag: string) => {
   courseStore.toggleTag(tag)
 }
 
-const clearFilters = () => {
-  courseStore.clearFilters()
-}
+// 暂时注释未使用的方法
+// const clearFilters = () => {
+//   courseStore.clearFilters()
+// }
 
 const handleCourseClick = (course: Course) => {
   console.log('课程点击:', course.title)
