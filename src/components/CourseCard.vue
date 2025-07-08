@@ -292,7 +292,7 @@ const handleWatchNow = () => {
   content: '';
   position: absolute;
   left: -9px;
-  top: 30px;
+  top: 120px;
   width: 18px;
   height: 18px;
   background: rgba(255, 255, 255, 0.98);
@@ -389,6 +389,7 @@ const handleWatchNow = () => {
   .col-md-3:nth-child(4n) .course-pop::before {
     left: auto;
     right: -9px;
+    top: 120px;
     transform: rotate(135deg);
   }
 

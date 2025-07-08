@@ -205,7 +205,7 @@ export const useCourseStore = defineStore('course', () => {
       rating: 4.9,
       reviewCount: 19,
       duration: '45 小时',
-      level: '高级',
+      level: '中级',
       instructor: '陈AI专家',
       badge: '前沿技术'
     },
