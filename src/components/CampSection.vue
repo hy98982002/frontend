@@ -323,11 +323,12 @@ watch(currentStage, newStage => {
 /* 热门标签样式 */
 .hot-keywords {
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 15px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  border-radius: 0px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
 }
 
 .hot-label {
@@ -356,9 +357,21 @@ watch(currentStage, newStage => {
 }
 
 .badge-tag.active {
-  background: #1e7f98;
-  color: white;
-  border-color: #1e7f98;
+  /* 激活效果：和体验专区按钮一样的深色渐变背景和白色文字 */
+  background: linear-gradient(135deg, #1e7f98, #2a9bb8) !important;
+  border-color: #1e7f98 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(30, 127, 152, 0.15);
+}
+
+/* 增加hover时保持激活状态的样式 */
+.badge-tag.active:hover {
+  background: linear-gradient(135deg, #166d84, #228ba1) !important;
+  border-color: #166d84 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(30, 127, 152, 0.2);
 }
 
 /* 阶段信息样式 */
