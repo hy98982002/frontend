@@ -374,6 +374,12 @@ watch(currentStage, newStage => {
   box-shadow: 0 6px 15px rgba(30, 127, 152, 0.2);
 }
 
+/* 点击时的按压效果，与阶段按钮保持一致 */
+.badge-tag:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 /* 阶段信息样式 */
 .stage-info {
   padding: 2rem;
