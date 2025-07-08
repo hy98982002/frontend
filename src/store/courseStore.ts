@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, readonly } from 'vue'
 import type { Course, StageKey } from '../types'
 
 // 课程数据
@@ -386,16 +386,24 @@ export const useCourseStore = defineStore('course', () => {
     selectedTags.value = []
   }
 
+  // 只设置阶段，不清空筛选条件
+  const setCurrentStageOnly = (stage: StageKey) => {
+    currentStage.value = stage
+  }
+
   const setSearchKeyword = (keyword: string) => {
     searchKeyword.value = keyword
   }
 
   const toggleTag = (tag: string) => {
+    // 单选模式：点击已选中的标签取消选中，点击未选中的标签则只选中它
     const index = selectedTags.value.indexOf(tag)
     if (index > -1) {
-      selectedTags.value.splice(index, 1)
+      // 如果已选中，则取消选中（清空数组）
+      selectedTags.value = []
     } else {
-      selectedTags.value.push(tag)
+      // 如果未选中，则清空数组后只选中这个标签
+      selectedTags.value = [tag]
     }
   }
 
@@ -428,7 +436,7 @@ export const useCourseStore = defineStore('course', () => {
   return {
     // 状态
     courses,
-    currentStage,
+    currentStage: readonly(currentStage), // 只读访问，防止外部直接修改
     searchKeyword,
     selectedTags,
     showVipOnly,
@@ -442,6 +450,7 @@ export const useCourseStore = defineStore('course', () => {
 
     // Actions
     setCurrentStage,
+    setCurrentStageOnly,
     setSearchKeyword,
     toggleTag,
     clearFilters,

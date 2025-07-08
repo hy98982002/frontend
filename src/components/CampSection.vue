@@ -45,6 +45,8 @@
             >
               {{ tag }}
             </span>
+            <!-- 清除筛选按钮暂时隐藏，改为单选模式 -->
+            <!--
             <button
               v-if="selectedTags.length > 0"
               class="btn btn-sm btn-outline-secondary ms-2"
@@ -52,6 +54,7 @@
             >
               <i class="fas fa-times me-1"></i>清除筛选
             </button>
+            -->
           </div>
         </div>
       </div>
@@ -161,7 +164,6 @@ const showVipOnly = computed(() => courseStore.showVipOnly)
 
 // 计算属性
 const filteredCourses = computed(() => {
-  courseStore.setCurrentStage(currentStage.value)
   return courseStore.filteredCourses
 })
 
@@ -267,7 +269,8 @@ const handleVipToggle = (vipOnly: boolean) => {
 
 // 监听阶段变化
 watch(currentStage, newStage => {
-  courseStore.setCurrentStage(newStage)
+  // 使用setCurrentStageOnly避免清空标签
+  courseStore.setCurrentStageOnly(newStage)
   displayCount.value = props.initialDisplayCount
   showAllCourses.value = false
 })
@@ -356,22 +359,40 @@ watch(currentStage, newStage => {
   transform: translateY(-2px);
 }
 
-.badge-tag.active {
+/* 热门技术按钮激活状态 - 更高优先级的选择器 */
+.hot-keywords .badge.badge-tag.active {
   /* 激活效果：和体验专区按钮一样的深色渐变背景和白色文字 */
   background: linear-gradient(135deg, #1e7f98, #2a9bb8) !important;
   border-color: #1e7f98 !important;
   color: #fff !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(30, 127, 152, 0.15);
+  box-shadow: 0 4px 10px rgba(30, 127, 152, 0.15) !important;
 }
 
 /* 增加hover时保持激活状态的样式 */
+.hot-keywords .badge.badge-tag.active:hover {
+  background: linear-gradient(135deg, #166d84, #228ba1) !important;
+  border-color: #166d84 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(30, 127, 152, 0.2) !important;
+}
+
+/* 备用样式 - 确保在所有情况下都能正确显示 */
+.badge-tag.active {
+  background: linear-gradient(135deg, #1e7f98, #2a9bb8) !important;
+  border-color: #1e7f98 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(30, 127, 152, 0.15) !important;
+}
+
 .badge-tag.active:hover {
   background: linear-gradient(135deg, #166d84, #228ba1) !important;
   border-color: #166d84 !important;
   color: #fff !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(30, 127, 152, 0.2);
+  box-shadow: 0 6px 15px rgba(30, 127, 152, 0.2) !important;
 }
 
 /* 阶段信息样式 */
