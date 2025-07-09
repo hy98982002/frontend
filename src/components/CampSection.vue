@@ -2,7 +2,7 @@
   <section id="courses" class="courses-section courses-section-compact">
     <div class="container">
       <!-- 区域标题 -->
-      <!-- 体验专区上升 -->
+      <!-- ·····上升 -->
       <div class="row mb-3" style="margin-top: -0.3rem">
         <div class="col-12">
           <h2 class="section-title text-start" data-aos="fade-up">

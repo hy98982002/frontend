@@ -59,7 +59,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 4,
       title: 'Git版本控制系统',
-      cover: '/images/rumen-python-cover.jpg',
+      cover: '/images/tiyan-python-cover.jpg',
       stage: 'free',
       camp: 'skill',
       tags: ['Git', '版本控制', '开发工具'],
@@ -195,7 +195,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 12,
       title: 'AI机器学习算法深度解析',
-      cover: '/images/shizhan-python-cover.jpg',
+      cover: '/images/jingjin-python-cover.jpg',
       stage: 'advanced',
       camp: 'enterprise',
       tags: ['机器学习', 'AI', '算法'],
@@ -264,7 +264,7 @@ export const useCourseStore = defineStore('course', () => {
     {
       id: 16,
       title: '智能聊天机器人开发',
-      cover: '/images/tiyan-python-cover.jpg',
+      cover: '/images/shizhan-python-cover.jpg',
       stage: 'project',
       camp: 'enterprise',
       tags: ['AI', 'NLP', '聊天机器人'],
@@ -277,6 +277,82 @@ export const useCourseStore = defineStore('course', () => {
       level: '实战级',
       instructor: '王AI架构师',
       badge: '最新技术',
+      isVip: true
+    },
+
+    // 会员专区 - Logo设计课程
+    {
+      id: 17,
+      title: 'Logo设计原理',
+      cover: '/images/huiyuan-logo-cover.png',
+      stage: 'basic',
+      camp: 'skill',
+      tags: ['logo设计', '设计原理', '品牌设计'],
+      isFree: true, // 会员专享课程免费
+      price: 0,
+      learnerCount: 89,
+      rating: 4.9,
+      reviewCount: 15,
+      duration: '18 小时',
+      level: '入门级',
+      instructor: '设计总监 张美工',
+      badge: '会员专享',
+      isVip: true
+    },
+    {
+      id: 18,
+      title: 'Logo设计实战',
+      cover: '/images/huiyuan-logo2-cover.png',
+      stage: 'advanced',
+      camp: 'skill',
+      tags: ['logo设计', '实战项目', '设计技巧'],
+      isFree: true, // 会员专享课程免费
+      price: 0,
+      learnerCount: 67,
+      rating: 4.8,
+      reviewCount: 12,
+      duration: '25 小时',
+      level: '中级',
+      instructor: '资深设计师 李创意',
+      badge: '会员专享',
+      isVip: true
+    },
+
+    // 项目落地课程
+    {
+      id: 19,
+      title: '企业级PS项目落地实战',
+      cover: '/images/xiangmuluodi-ps-cover.png',
+      stage: 'landing',
+      camp: 'enterprise',
+      tags: ['项目落地', 'PS设计', '企业级项目'],
+      isFree: false,
+      price: 1299,
+      learnerCount: 45,
+      rating: 4.9,
+      reviewCount: 8,
+      duration: '80 小时',
+      level: '高级',
+      instructor: '项目总监 王落地',
+      badge: '项目落地',
+      isVip: true
+    },
+    {
+      id: 20,
+      title: '高级PS项目落地方案',
+      cover: '/images/xiangmuluodi-ps2-cover.png',
+      stage: 'landing',
+      camp: 'enterprise',
+      tags: ['项目落地', 'PS高级', '解决方案'],
+      isFree: false,
+      price: 1599,
+      learnerCount: 32,
+      rating: 5.0,
+      reviewCount: 6,
+      duration: '100 小时',
+      level: '专家级',
+      instructor: '技术专家 李落地',
+      badge: '顶级项目',
       isVip: true
     }
   ])
@@ -300,11 +376,14 @@ export const useCourseStore = defineStore('course', () => {
 
   // 计算属性：根据搜索条件筛选课程
   const filteredCourses = computed(() => {
-    let result = coursesByStage.value
+    let result: Course[]
 
-    // 会员专区筛选 - 优先级最高
+    // 会员专区筛选 - 优先级最高，显示所有会员课程，不受阶段限制
     if (showVipOnly.value) {
-      result = result.filter(course => course.isVip === true)
+      result = courses.value.filter(course => course.isVip === true)
+    } else {
+      // 非会员专区时按阶段筛选
+      result = coursesByStage.value
     }
 
     // 关键词搜索
@@ -329,7 +408,13 @@ export const useCourseStore = defineStore('course', () => {
   // 计算属性：获取当前阶段的所有标签
   const currentStageTags = computed(() => {
     const tags = new Set<string>()
-    coursesByStage.value.forEach(course => {
+
+    // 根据当前模式选择不同的课程来源
+    const sourceCourses = showVipOnly.value
+      ? courses.value.filter(course => course.isVip === true) // 会员专区：显示所有会员课程的标签
+      : coursesByStage.value // 普通模式：显示当前阶段课程的标签
+
+    sourceCourses.forEach(course => {
       course.tags.forEach(tag => tags.add(tag))
     })
     return Array.from(tags)
@@ -338,7 +423,13 @@ export const useCourseStore = defineStore('course', () => {
   // 计算属性：热门标签（根据课程数量排序）
   const popularTags = computed(() => {
     const tagCounts = new Map<string, number>()
-    coursesByStage.value.forEach(course => {
+
+    // 根据当前模式选择不同的课程来源
+    const sourceCourses = showVipOnly.value
+      ? courses.value.filter(course => course.isVip === true) // 会员专区：显示所有会员课程的标签
+      : coursesByStage.value // 普通模式：显示当前阶段课程的标签
+
+    sourceCourses.forEach(course => {
       course.tags.forEach(tag => {
         tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
       })
