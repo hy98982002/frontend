@@ -23,9 +23,9 @@
 
           <!-- 评分显示 -->
           <div v-if="course.rating && course.reviewCount" class="d-flex align-items-center mt-2">
-            <span class="text-warning fw-bold me-1">{{ course.rating }}</span>
+            <span class="rating-number-clear me-1">{{ course.rating }}</span>
             <StarRating :rating="course.rating" size="small" class="me-2" />
-            <small class="text-muted">({{ course.reviewCount }})</small>
+            <span class="review-count-clear">({{ course.reviewCount }})</span>
           </div>
         </div>
 
@@ -34,7 +34,7 @@
           <!-- 底部区域磨玻璃背景 - 不覆盖图片 -->
           <div class="glass-background-text low-blur"></div>
           <span :class="levelStyleClass">{{ displayLevel }}</span>
-          <span class="text-muted ms-2">
+          <span class="learner-count-clear ms-2">
             <i class="fas fa-user"></i> {{ displayLearnerCount }}
           </span>
 
@@ -51,7 +51,7 @@
             {{ course.badge }}
           </span>
 
-          <p class="small text-muted">
+          <p class="course-info-clear">
             总共 {{ course.duration || '45 小时' }} · {{ course.level || '入门级别' }}
           </p>
 
@@ -191,6 +191,79 @@ const handleWatchNow = () => {
 
 /* 自定义星星评分组件已完全替代FontAwesome星星 */
 /* 不再需要FontAwesome星星相关的保护样式 */
+
+/* 评分数字清晰显示 */
+.rating-number-clear {
+  color: #ffc107 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  /* 禁用任何可能导致模糊的效果 */
+  filter: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+  /* 确保字体边缘锐利 */
+  font-feature-settings: normal !important;
+  font-variant-ligatures: none !important;
+}
+
+/* 评价人数清晰显示 */
+.review-count-clear {
+  color: #666 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  /* 禁用任何可能导致模糊的效果 */
+  filter: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+  /* 确保字体边缘锐利 */
+  font-feature-settings: normal !important;
+  font-variant-ligatures: none !important;
+}
+
+/* 学员数清晰显示 */
+.learner-count-clear {
+  color: #666 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  /* 禁用任何可能导致模糊的效果 */
+  filter: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+  /* 确保字体边缘锐利 */
+  font-feature-settings: normal !important;
+  font-variant-ligatures: none !important;
+}
+
+/* 课程信息清晰显示 */
+.course-info-clear {
+  color: #666 !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  margin-bottom: 16px !important;
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  /* 禁用任何可能导致模糊的效果 */
+  filter: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+  /* 确保字体边缘锐利 */
+  font-feature-settings: normal !important;
+  font-variant-ligatures: none !important;
+}
 
 /* 卡片容器 - 文字层清晰 */
 .card-glass {
