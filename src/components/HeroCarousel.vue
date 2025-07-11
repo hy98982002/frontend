@@ -326,11 +326,11 @@ onMounted(() => {
   margin: 0;
 }
 
-/* 课程说明卡片容器 - 调整为更合理的比例 */
+/* 课程说明卡片容器 - 轻度磨玻璃保证文字清晰 */
 .hero-content-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(4px); /* 降低磨玻璃强度 */
+  -webkit-backdrop-filter: blur(4px);
   border-radius: 15px;
   padding: 30px 25px;
   margin: 0 auto;
@@ -522,9 +522,9 @@ onMounted(() => {
   height: 2.5rem;
   background-size: 50%;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(3px); /* 降低磨玻璃强度 */
+  -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;

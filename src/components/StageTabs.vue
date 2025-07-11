@@ -68,15 +68,15 @@ const handleVipToggle = () => {
 }
 
 .stage-tab-btn {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 2px solid rgba(30, 127, 152, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 2px solid rgba(30, 127, 152, 0.35);
   border-radius: 25px;
   color: #333;
   padding: 12px 24px;
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 570;
+  font-size: 17px;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
   position: relative;
@@ -110,10 +110,11 @@ const handleVipToggle = () => {
   /* 基础状态：淡雅橙色主调，低调优雅 */
   background: rgba(238, 177, 142, 0.15);
   border: 2px solid rgba(238, 177, 142, 1);
-  color: #b8906f;
+  color: #836349;
   position: relative;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  font-weight: 750;
 }
 
 .stage-tab-btn.vip-btn:hover {
@@ -126,7 +127,7 @@ const handleVipToggle = () => {
     rgba(253, 229, 196, 0.35) 100%
   );
   border-color: rgba(238, 177, 142, 0.8);
-  color: #9d7a5a;
+  color: #836349;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(238, 177, 142, 0.15), 0 3px 8px rgba(249, 215, 178, 0.1);
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
@@ -143,11 +144,12 @@ const handleVipToggle = () => {
     rgba(255, 240, 210, 0.5) 100%
   );
   border-color: #f47e30;
-  color: #8d6d4f;
+  color: #836349;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(238, 177, 142, 0.2), 0 3px 10px rgba(249, 215, 178, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+  font-weight: 700;
 }
 
 .stage-tab-btn.vip-btn.active:hover {
@@ -163,7 +165,8 @@ const handleVipToggle = () => {
   color: #7a5d42;
   box-shadow: 0 8px 30px rgba(238, 177, 142, 0.25), 0 4px 12px rgba(249, 215, 178, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  font-weight: 700;
 }
 
 .stage-tab-btn.vip-btn .fas.fa-crown {

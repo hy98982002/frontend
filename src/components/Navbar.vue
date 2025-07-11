@@ -1,5 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-glass">
+    <!-- 磨玻璃背景层 - 分离以保证文字清晰 -->
+    <div class="glass-background medium-blur"></div>
     <div class="container">
       <!-- 品牌Logo -->
       <router-link class="navbar-brand" to="/">
@@ -154,14 +156,20 @@ const handleSearch = () => {
 </script>
 
 <style scoped>
-/* 导航栏玻璃效果 */
+/* 导航栏容器 - 文字层清晰 */
 .navbar-glass {
+  position: relative;
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  /* 确保文字层在磨玻璃背景之上 */
+  z-index: 1000;
+}
+
+.navbar-glass .container {
+  position: relative;
+  z-index: 10;
 }
 
 .navbar-glass.scrolled {
@@ -268,14 +276,16 @@ const handleSearch = () => {
   transform: translateY(-1px);
 }
 
-/* 下拉菜单 */
+/* 下拉菜单 - 使用轻度磨玻璃保证文字清晰 */
 .dropdown-menu {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  background: rgba(255, 255, 255, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 20;
 }
 
 .dropdown-item {

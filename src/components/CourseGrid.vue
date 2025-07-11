@@ -80,9 +80,9 @@ const handleLoadMore = () => {
 .empty-state {
   padding: 2rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(2px); /* 降低磨玻璃强度保证文字清晰 */
+  -webkit-backdrop-filter: blur(2px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 

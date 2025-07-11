@@ -17,6 +17,8 @@
         ></div>
 
         <div class="card-body">
+          <!-- 文字区域磨玻璃背景 - 不覆盖图片 -->
+          <div class="glass-background-text low-blur"></div>
           <p class="card-text">{{ course.title }}</p>
 
           <!-- 评分显示 -->
@@ -31,6 +33,8 @@
 
         <!-- 卡片底部信息 -->
         <div class="card-footer">
+          <!-- 底部区域磨玻璃背景 - 不覆盖图片 -->
+          <div class="glass-background-text low-blur"></div>
           <span :class="levelStyleClass">{{ displayLevel }}</span>
           <span class="text-muted ms-2">
             <i class="fas fa-user"></i> {{ displayLearnerCount }}
@@ -198,18 +202,17 @@ const handleWatchNow = () => {
   color: inherit;
 }
 
-/* 卡片玻璃效果 */
+/* 卡片容器 - 文字层清晰 */
 .card-glass {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   overflow: visible; /* 恢复可见，让弹出卡能显示 */
-  position: relative;
   padding: 0 !important; /* 移除所有内边距 */
+  z-index: 10; /* 确保文字层在磨玻璃背景之上 */
 }
 
 /* 强制覆盖Bootstrap卡片样式 */
@@ -226,8 +229,8 @@ const handleWatchNow = () => {
 .card-glass:hover {
   transform: none;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
-  z-index: 2000;
-  position: relative; /* 确保z-index生效 */
+  z-index: 10000 !important; /* 确保卡片hover时z-index足够高，但低于弹出卡 */
+  position: relative !important; /* 确保z-index生效 */
 }
 
 .card-img-top {
@@ -243,27 +246,73 @@ const handleWatchNow = () => {
   padding: 0 !important;
   border: none !important;
   overflow: hidden !important; /* 只对图片区域进行裁剪 */
+
+  /* 彻底的图片清晰度优化 */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  -o-filter: none !important;
+  -ms-filter: none !important;
+
+  /* 强制图片锐利渲染 */
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
+  image-rendering: pixelated !important;
+  image-rendering: auto !important;
+
+  /* 启用硬件加速保证清晰 */
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  will-change: auto !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+
+  /* 移除可能影响的混合模式和字体设置 */
+  mix-blend-mode: normal !important;
+  -webkit-mix-blend-mode: normal !important;
+  -webkit-font-smoothing: initial !important;
+  -moz-osx-font-smoothing: initial !important;
+  text-rendering: auto !important;
+
+  /* 强制移除任何模糊相关属性 */
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-/* 卡片主体样式 */
+/* 文字区域专用磨玻璃背景 - 不影响图片 */
+.glass-background-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* 卡片主体样式 - 文字清晰 */
 .card-body {
+  position: relative;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 15; /* 确保文字层在背景之上 */
 }
 
 .card-footer {
-  background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  background: rgba(255, 255, 255, 0.85) !important;
   border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 0 0 18px 18px !important;
   border-top: none;
   overflow: hidden;
+  z-index: 15; /* 确保文字层在背景之上 */
 }
 
-/* 详情弹窗样式 */
+/* 详情弹窗样式 - 轻度磨玻璃保证文字清晰 */
 .course-pop {
   position: absolute;
   top: 12px;
@@ -272,8 +321,8 @@ const handleWatchNow = () => {
   margin-top: -15px;
   width: 340px;
   background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(3px); /* 降低磨玻璃强度 */
+  -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(22, 109, 132, 0.1);
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(30, 127, 152, 0.06), 0 2px 8px rgba(30, 127, 152, 0.04),
@@ -282,12 +331,14 @@ const handleWatchNow = () => {
   opacity: 0;
   visibility: hidden;
   transform: translateX(12px) scale(0.96);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 弹出时有动画，消失时立即隐藏 */
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s 0.3s; /* visibility延迟，确保消失时立即隐藏 */
   pointer-events: none;
-  z-index: 1050;
+  z-index: 10001 !important; /* 提高z-index确保不被遮盖 */
 }
 
-/* 小尖角优化 */
+/* 小尖角优化 - 轻度磨玻璃 */
 .course-pop::before {
   content: '';
   position: absolute;
@@ -296,8 +347,8 @@ const handleWatchNow = () => {
   width: 18px;
   height: 18px;
   background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(3px); /* 降低磨玻璃强度 */
+  -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(30, 127, 152, 0.08);
   border-right: none;
   border-bottom: none;
@@ -351,11 +402,22 @@ const handleWatchNow = () => {
 
 /* ≥lg 屏幕启用 hover 弹窗 */
 @media (min-width: 992px) {
+  /* 确保所有hover的卡片容器都有最高层级 */
+  .col-sm-6.col-md-3:hover,
+  .col-md-3:hover {
+    z-index: 10000 !important;
+    position: relative !important;
+  }
+
   .card:hover .course-pop {
     opacity: 1;
     visibility: visible;
     transform: translateX(0) scale(1);
     pointer-events: auto;
+    z-index: 10001 !important; /* 确保弹出卡在所有元素之上 */
+    /* 弹出时立即显示，移除延迟 */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s; /* 立即显示 */
   }
 
   .card:hover .course-pop,
@@ -364,6 +426,10 @@ const handleWatchNow = () => {
     visibility: visible;
     transform: translateX(0) scale(1);
     pointer-events: auto;
+    z-index: 10001 !important; /* 确保弹出卡在所有元素之上 */
+    /* 弹出时立即显示，移除延迟 */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s; /* 立即显示 */
   }
 
   /* 桥接功能 - 连接卡片和弹出卡的不可见区域 */
@@ -374,7 +440,7 @@ const handleWatchNow = () => {
     left: 100%;
     width: 24px;
     height: 100%;
-    z-index: 1049;
+    z-index: 10000 !important; /* 确保桥接区域不被遮盖 */
   }
 
   /* 右侧卡片特殊处理 */
@@ -405,7 +471,7 @@ const handleWatchNow = () => {
     right: 100%;
     width: 24px;
     height: 100%;
-    z-index: 1049;
+    z-index: 10000 !important; /* 确保桥接区域不被遮盖 */
   }
 }
 

@@ -280,9 +280,9 @@ watch(currentStage, newStage => {
 
 <style scoped>
 .courses-section {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 248, 255, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 248, 255, 0.98) 100%);
+  backdrop-filter: blur(3px); /* 降低磨玻璃强度保证文字清晰 */
+  -webkit-backdrop-filter: blur(3px);
   min-height: 80vh;
 }
 
@@ -397,13 +397,13 @@ watch(currentStage, newStage => {
   box-shadow: 0 6px 15px rgba(30, 127, 152, 0.2) !important;
 }
 
-/* 阶段信息样式 */
+/* 阶段信息样式 - 轻度磨玻璃保证文字清晰 */
 .stage-info {
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(3px); /* 降低磨玻璃强度 */
+  -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
@@ -462,15 +462,15 @@ watch(currentStage, newStage => {
 .btn-outline-tech-blue {
   border: 2px solid #1e7f98;
   color: #1e7f98;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 50px;
   padding: 13px 38px;
   font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px); /* 降低磨玻璃强度保证文字清晰 */
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .btn-outline-tech-blue:hover {
