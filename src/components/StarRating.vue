@@ -1,10 +1,46 @@
 <template>
-  <div class="star-rating-custom" :class="{ 'star-rating-small': size === 'small' }">
-    <div v-for="star in 5" :key="star" class="star-item" :class="getStarType(star)">
-      <!-- 空心星星背景 -->
-      <div class="star-empty"></div>
-      <!-- 实心星星填充 -->
-      <div class="star-filled" :style="getStarFillStyle(star)"></div>
+  <div
+    class="star-rating-custom"
+    :class="{ 'star-rating-small': size === 'small' }"
+  >
+    <div
+      v-for="star in 5"
+      :key="star"
+      class="star-item"
+      :class="getStarType(star)"
+    >
+      <!-- 空心星 -->
+      <svg
+        class="star-empty"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <polygon
+          points="12,2 15,8.5 22,9.3 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9.3 9,8.5"
+          fill="none"
+          stroke="#d0d0d0"
+          stroke-width="2"
+        />
+      </svg>
+      <!-- 实心星填充，使用包裹容器控制宽度 -->
+      <div class="fill-wrapper" :style="getStarFillStyle(star)">
+        <svg
+          class="star-filled"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="starGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffc107" />
+              <stop offset="100%" stop-color="#ff8f00" />
+            </linearGradient>
+          </defs>
+          <polygon
+            points="12,2 15,8.5 22,9.3 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9.3 9,8.5"
+            fill="url(#starGrad)"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </template>
@@ -73,55 +109,32 @@ const getStarFillStyle = (starNumber: number): { width: string } => {
   left: 0;
   width: 100%;
   height: 100%;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-  background-color: #e0e0e0;
-  border: 1px solid #d0d0d0;
+  stroke: #d0d0d0;
+  fill: none;
+  stroke-width: 2;
+  shape-rendering: geometricPrecision;
+  pointer-events: none;
 }
 
 /* 实心星星填充 */
-.star-filled {
+.fill-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   overflow: hidden;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-  background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
   transition: width 0.3s ease;
 }
 
+.star-filled {
+  width: 100%;
+  height: 100%;
+  shape-rendering: geometricPrecision;
+  pointer-events: none;
+}
+
 /* 星星状态样式 */
-.star-full .star-filled {
-  background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
-}
-
-.star-half .star-filled {
-  background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
-}
-
-.star-empty-type .star-filled {
+.star-empty-type .fill-wrapper {
   width: 0% !important;
 }
 
