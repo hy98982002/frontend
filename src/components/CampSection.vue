@@ -76,7 +76,7 @@
                 {{ totalLearners }}+ 学员
               </span>
               <span class="stat-item">
-                <i class="fas fa-star me-1"></i>
+                <StarRating :rating="5" size="small" class="me-1" />
                 {{ averageRating.toFixed(1) }} 平均评分
               </span>
             </div>
@@ -137,6 +137,7 @@
 import { ref, computed, watch } from 'vue'
 import StageTabs from './StageTabs.vue'
 import CourseGrid from './CourseGrid.vue'
+import StarRating from './StarRating.vue'
 import { useCourseStore } from '../store/courseStore'
 import { useUIStore } from '../store/uiStore'
 import type { Course, StageKey } from '../types'
@@ -220,12 +221,12 @@ const selectedTags = computed(() => courseStore.selectedTags)
 //   return filteredCourses.value.reduce((sum, course) => sum + course.learnerCount, 0)
 // })
 
-// const averageRating = computed(() => {
-//   const validRatings = filteredCourses.value.filter(course => course.rating)
-//   if (validRatings.length === 0) return 0
-//   const sum = validRatings.reduce((sum, course) => sum + (course.rating || 0), 0)
-//   return sum / validRatings.length
-// })
+const averageRating = computed(() => {
+  const validRatings = filteredCourses.value.filter(course => course.rating)
+  if (validRatings.length === 0) return 0
+  const sum = validRatings.reduce((sum, course) => sum + (course.rating || 0), 0)
+  return sum / validRatings.length
+})
 
 // 方法
 const toggleTag = (tag: string) => {

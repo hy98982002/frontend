@@ -24,9 +24,7 @@
           <!-- 评分显示 -->
           <div v-if="course.rating && course.reviewCount" class="d-flex align-items-center mt-2">
             <span class="text-warning fw-bold me-1">{{ course.rating }}</span>
-            <div class="text-warning me-2">
-              <i v-for="star in 5" :key="star" :class="getStarClass(star)"></i>
-            </div>
+            <StarRating :rating="course.rating" size="small" class="me-2" />
             <small class="text-muted">({{ course.reviewCount }})</small>
           </div>
         </div>
@@ -82,6 +80,7 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
 import type { Course, StageKey } from '../types'
+import StarRating from './StarRating.vue'
 import {
   // STAGE_STYLES,  // 暂时注释未使用的导入
   getTemplateFromImagePath,
@@ -160,19 +159,7 @@ const levelStyleClass = computed(() => {
   return `text-${style}`
 })
 
-// 星级评分显示
-const getStarClass = (star: number): string => {
-  if (!course.value.rating) return 'far fa-star'
-
-  const rating = course.value.rating
-  if (star <= Math.floor(rating)) {
-    return 'fas fa-star'
-  } else if (star - 0.5 <= rating) {
-    return 'fas fa-star-half-alt'
-  } else {
-    return 'far fa-star'
-  }
-}
+// 星级评分现在使用自定义StarRating组件，不再需要getStarClass函数
 
 // 事件处理函数
 const handleCardClick = () => {
@@ -201,6 +188,9 @@ const handleWatchNow = () => {
   text-decoration: none;
   color: inherit;
 }
+
+/* 自定义星星评分组件已完全替代FontAwesome星星 */
+/* 不再需要FontAwesome星星相关的保护样式 */
 
 /* 卡片容器 - 文字层清晰 */
 .card-glass {
@@ -331,9 +321,8 @@ const handleWatchNow = () => {
   opacity: 0;
   visibility: hidden;
   transform: translateX(12px) scale(0.96);
-  /* 弹出时有动画，消失时立即隐藏 */
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0s 0.3s; /* visibility延迟，确保消失时立即隐藏 */
+  /* 消失时立即隐藏 - 移除所有延迟 */
+  transition: opacity 0s, transform 0s, visibility 0s;
   pointer-events: none;
   z-index: 10001 !important; /* 提高z-index确保不被遮盖 */
 }
@@ -359,7 +348,7 @@ const handleWatchNow = () => {
 /* 内容样式优化 */
 .course-pop h6 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500; /* 统一调整为500 */
   color: #1a1a1a;
   margin-bottom: 16px;
   letter-spacing: 0.5px;
@@ -415,9 +404,9 @@ const handleWatchNow = () => {
     transform: translateX(0) scale(1);
     pointer-events: auto;
     z-index: 10001 !important; /* 确保弹出卡在所有元素之上 */
-    /* 弹出时立即显示，移除延迟 */
+    /* 弹出时有动画效果 */
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s; /* 立即显示 */
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s; /* 立即显示，无延迟 */
   }
 
   .card:hover .course-pop,
@@ -427,9 +416,9 @@ const handleWatchNow = () => {
     transform: translateX(0) scale(1);
     pointer-events: auto;
     z-index: 10001 !important; /* 确保弹出卡在所有元素之上 */
-    /* 弹出时立即显示，移除延迟 */
+    /* 弹出时有动画效果 */
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s; /* 立即显示 */
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s; /* 立即显示，无延迟 */
   }
 
   /* 桥接功能 - 连接卡片和弹出卡的不可见区域 */

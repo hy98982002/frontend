@@ -75,7 +75,7 @@ const handleVipToggle = () => {
   border-radius: 25px;
   color: #333;
   padding: 12px 24px;
-  font-weight: 570;
+  font-weight: 500; /* 统一调整为500 */
   font-size: 17px;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;

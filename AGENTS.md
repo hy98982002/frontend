@@ -106,6 +106,71 @@ frontend/src/
     └── ...                     # 其他静态文件
 ```
 
+## 🔤 字体清晰度技术架构 (2025-01-22 升级)
+
+### 核心原理
+
+字体清晰度技术基于**层级分离架构**，确保文本内容始终在清晰层，glassmorphism 效果仅作用于背景层。
+
+### 技术实现
+
+#### 1. 全局字体优化
+
+```css
+/* Windows 10 专用字体栈 */
+body {
+  font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+```
+
+#### 2. 层级分离系统
+
+- **z-index 10+**: 文本内容层（绝对清晰）
+- **z-index 1**: Glassmorphism 背景层（模糊效果）
+- **文本保护**: `backdrop-filter: none !important`
+
+#### 3. 字体权重标准化
+
+- **统一权重**: 所有文本 font-weight: 500
+- **特殊保留**: 会员专区按钮保持 font-weight: 700/750
+- **图标保护**: FontAwesome 图标专门优化
+
+#### 4. FontAwesome 图标清晰度
+
+```css
+/* 激进的FontAwesome保护 */
+i[class*='fa'],
+.star-icon {
+  font-family: 'Font Awesome 6 Free' !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  transform: none !important;
+  font-weight: 900 !important;
+}
+```
+
+#### 5. 模糊强度分级
+
+- **low-blur**: 2px（文本区域）
+- **medium-blur**: 6px（装饰背景）
+- **high-blur**: 12px（纯背景层）
+
+### 关键文件
+
+1. `frontend/src/assets/fonts-clarity.css` - 核心字体清晰度模块
+2. `frontend/src/components/CourseCard.vue` - 星级评分特殊保护
+3. `frontend/src/components/Navbar.vue` - 导航栏层级分离
+4. `frontend/src/components/StageTabs.vue` - 会员专区特殊字重
+
+### 性能优化
+
+- 70%模糊强度降低 → GPU 渲染负担减轻
+- 图片完全清晰 → 移除不必要的 glassmorphism
+- 动画优化 → 0s 消失 + 0.3s 出现
+
 ## 🎨 样式与 UI 规范
 
 ### Bootstrap 5.3.6 使用约定

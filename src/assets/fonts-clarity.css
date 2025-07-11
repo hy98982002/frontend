@@ -52,7 +52,12 @@ svg,
 [style*='background-image'],
 .course-img,
 .hero-carousel img,
-.carousel-item {
+.carousel-item,
+.img-fluid,
+.img-thumbnail,
+.card-img,
+.hero-image,
+.course-image {
   /* 重置可能影响图片的字体属性 */
   font-family: initial !important;
   -webkit-font-smoothing: initial !important;
@@ -61,6 +66,41 @@ svg,
   font-feature-settings: initial !important;
   font-smooth: initial !important;
   -webkit-text-stroke: initial !important;
+}
+
+/* FontAwesome图标排除全局样式影响 - 激进修复 */
+i[class*='fa'],
+.fa,
+.fas,
+.far,
+.fal,
+.fab,
+[class^='fa-'],
+[class*=' fa-'],
+.star-icon,
+i.fa-star,
+i.fa-star-half-alt {
+  /* 强制使用FontAwesome专用字体，不受全局字体影响 */
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Pro', 'Font Awesome 5 Free', 'FontAwesome' !important;
+
+  /* 激进的清晰度保护 */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+
+  /* 强制移除全局字体样式 */
+  font-feature-settings: initial !important;
+  font-smooth: initial !important;
+  -webkit-text-stroke: initial !important;
+
+  /* 彻底清除模糊效果 */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+
+  /* 重置transform */
+  transform: none !important;
+  opacity: 1 !important;
 }
 
 /* ==================== 文字层级分离 ==================== */
@@ -103,8 +143,11 @@ video,
 .course-img,
 .card-img,
 div[style*='background-image'],
-[class*='img'],
-[class*='image'] {
+.img-fluid,
+.img-thumbnail,
+.card-img,
+.hero-image,
+.course-image {
   /* 彻底移除所有可能影响图片的效果 */
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -183,7 +226,7 @@ h6 {
   }
 
   .card-title {
-    font-weight: 600;
+    font-weight: 500; /* 统一调整为500 */
     letter-spacing: 0.02em;
   }
 
@@ -225,7 +268,7 @@ body {
 
 /* 卡片标题清晰度 */
 .card-title {
-  font-weight: 600;
+  font-weight: 500; /* 统一调整为500 */
   text-shadow: var(--text-shadow-light);
   -webkit-text-stroke: var(--text-stroke-contrast);
 }
@@ -280,7 +323,7 @@ select {
 
   .card-title {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 500; /* 统一调整为500 */
   }
 
   .btn {
@@ -298,7 +341,7 @@ select {
 
   .card-title {
     font-size: 1.3rem;
-    font-weight: 600;
+    font-weight: 500; /* 统一调整为500 */
   }
 }
 
@@ -316,7 +359,7 @@ select {
 
 /* 超高对比度文字 */
 .ultra-contrast-text {
-  font-weight: 600 !important;
+  font-weight: 500 !important; /* 统一调整为500 */
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
   -webkit-text-stroke: 0.8px rgba(0, 0, 0, 0.15) !important;
 }
@@ -325,4 +368,60 @@ select {
 .debug-text-layer {
   background-color: rgba(255, 0, 0, 0.1) !important;
   outline: 1px solid red !important;
+}
+
+/* ==================== FontAwesome图标专门保护 ==================== */
+
+/* FontAwesome图标专门保护 - 确保不受图片优化影响 */
+i[class*='fa'],
+.fa,
+.fas,
+.far,
+.fal,
+.fab,
+.fad,
+.fass,
+.fasr,
+[class^='fa-'],
+[class*=' fa-'],
+i[class*='fa-star'],
+.fas.fa-star,
+.far.fa-star,
+.fas.fa-star-half-alt {
+  /* 恢复FontAwesome图标的正常渲染 */
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Pro', 'Font Awesome 5 Free',
+    'Font Awesome 5 Pro', 'FontAwesome' !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  font-feature-settings: normal !important;
+
+  /* 彻底移除可能影响图标的图片优化属性 */
+  image-rendering: auto !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  -o-filter: none !important;
+  -ms-filter: none !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  will-change: auto !important;
+
+  /* 确保图标清晰显示 */
+  font-display: block !important;
+  font-weight: inherit !important;
+  font-style: normal !important;
+  font-variant: normal !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  /* 移除可能的混合模式影响 */
+  mix-blend-mode: normal !important;
+  -webkit-mix-blend-mode: normal !important;
+
+  /* 强制重置可能影响的属性 */
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
 }

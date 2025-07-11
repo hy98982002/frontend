@@ -58,7 +58,7 @@
                     {{ teacher.studentCount }}+ 学员
                   </span>
                   <span class="stat">
-                    <i class="fas fa-star"></i>
+                    <StarRating :rating="teacher.rating" size="small" class="me-1" />
                     {{ teacher.rating }}
                   </span>
                 </div>
@@ -259,6 +259,7 @@
 import { ref, onMounted } from 'vue'
 import HeroCarousel from '../components/HeroCarousel.vue'
 import CampSection from '../components/CampSection.vue'
+import StarRating from '../components/StarRating.vue'
 import { useUIStore } from '../store/uiStore'
 
 const uiStore = useUIStore()
