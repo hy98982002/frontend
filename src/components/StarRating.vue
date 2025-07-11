@@ -87,6 +87,7 @@ const getStarFillStyle = (starNumber: number): { width: string } => {
   );
   background-color: #e0e0e0;
   border: 1px solid #d0d0d0;
+  shape-rendering: crispEdges;
 }
 
 /* 实心星星填充 */
@@ -109,6 +110,7 @@ const getStarFillStyle = (starNumber: number): { width: string } => {
     39% 35%
   );
   background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+  shape-rendering: crispEdges;
   transition: width 0.3s ease;
 }
 
